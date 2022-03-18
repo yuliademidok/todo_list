@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+{% if todos %}
+<h1>{{ todos.count }} current todos</h1>
+
+{% for todo in todos %}
+<a href="/">
+    <b>{{ todo.title }}</b>
+</a>
+
+{% if todo.description %}
+<p>{{ todo.description|truncatechars:64 }}</p>
+{% endif %}
+<br>
+<br>
+{% endfor %}
+
+{% else %}
+<h2>You don't have any todo!</h2>
+<a href="/">Create Todo</a>
+{% endif %}
+
+</body>
+</html>

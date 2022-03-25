@@ -4,6 +4,10 @@
 {% if todos %}
 <h1>{{ todos.count }} {{ todos_status }} todos</h1>
 
+{% for message in messages %}
+<p>{{ message }}</p>
+{% endfor %}
+
 {% for todo in todos %}
 <a href="/">
     <b>{{ todo.title }}</b>
@@ -18,7 +22,7 @@
 
 {% else %}
 <h2>You don't have any todo!</h2>
-<a href="/">Create Todo</a>
+<a href="{% url 'todos:createtodo' %}">Create Todo</a>
 {% endif %}
 
 {% endblock %}

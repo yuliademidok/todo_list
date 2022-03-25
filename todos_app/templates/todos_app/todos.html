@@ -2,7 +2,7 @@
 {% block content %}
 
 {% if todos %}
-<h1>{{ todos.count }} current todos</h1>
+<h1>{{ todos.count }} {{ todos_status }} todos</h1>
 
 {% for todo in todos %}
 <a href="/">

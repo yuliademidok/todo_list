@@ -62,22 +62,16 @@ class CompletedTodosView(LoginRequiredMixin, generic.ListView):
         return data
 
 
-class CreateTodoView(LoginRequiredMixin, generic.CreateView):
+class CreateTodoView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
+    model = Todos
+    form_class = TodoForm
     template_name = 'todos_app/create_todo.html'
+    success_url = reverse_lazy('todos:currenttodos')
+    success_message = 'New todo is successfully added!'
 
-    def get(self, request, *args, **kwargs):
-        context = {'form': TodoForm(), 'title': 'Create todo'}
-        return render(request, self.template_name, context)
-
-    def post(self, request, *args, **kwargs):
-        form = TodoForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            todo = Todos(**data, user=request.user)
-            todo.save()
-            messages.success(request, 'New todo is successfully added')
-            return redirect('todos:currenttodos')
-        return render(request, self.template_name, {'form': form})
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(CreateTodoView, self).form_valid(form)
 
 
 class UpdateTodoView(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):

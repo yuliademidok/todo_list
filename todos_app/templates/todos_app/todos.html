@@ -9,7 +9,7 @@
 {% endfor %}
 
 {% for todo in todos %}
-<a href="/">
+<a href="{% url 'todos:updatetodo' todo.id %}">
     <b>{{ todo.title }}</b>
 </a>
 

@@ -1,6 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse_lazy
 from django.views import generic
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
 from .forms import TodoForm
@@ -76,3 +78,15 @@ class CreateTodoView(LoginRequiredMixin, generic.CreateView):
             messages.success(request, 'New todo is successfully added')
             return redirect('todos:currenttodos')
         return render(request, self.template_name, {'form': form})
+
+
+class UpdateTodoView(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
+    model = Todos
+    form_class = TodoForm
+    template_name = 'todos_app/updatetodo.html'
+    success_url = reverse_lazy('todos:currenttodos')
+    success_message = 'Todo is successfully updated!'
+
+    def get_object(self, queryset=None):
+        self.object = get_object_or_404(Todos, pk=self.kwargs['pk'], user=self.request.user)
+        return self.object

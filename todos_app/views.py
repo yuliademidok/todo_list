@@ -1,9 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views import generic
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect
 
 from .forms import TodoForm
 from .models import Todos
@@ -84,3 +85,28 @@ class UpdateTodoView(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView
     def get_object(self, queryset=None):
         self.object = get_object_or_404(Todos, pk=self.kwargs['pk'], user=self.request.user)
         return self.object
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['todo'] = self.get_object()
+        data['title'] = data['todo']
+        return data
+
+
+class DeleteTodoView(LoginRequiredMixin, SuccessMessageMixin, generic.DeleteView):
+    model = Todos
+    success_url = reverse_lazy('todos:currenttodos')
+    success_message = 'Todo is successfully deleted!'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(DeleteTodoView, self).form_valid(form)
+
+
+@login_required
+def complete_todo(request, pk):
+    todo = get_object_or_404(Todos, pk=pk, user=request.user)
+    if request.method == 'POST' and todo.completed_at is None:
+        todo.completed_at = timezone.now()
+        todo.save()
+        return redirect('todos:currenttodos')

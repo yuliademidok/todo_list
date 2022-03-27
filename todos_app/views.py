@@ -74,6 +74,11 @@ class CreateTodoView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView
         form.instance.user = self.request.user
         return super(CreateTodoView, self).form_valid(form)
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['title'] = 'Create todo'
+        return data
+
 
 class UpdateTodoView(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     model = Todos
@@ -88,7 +93,7 @@ class UpdateTodoView(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView
 
     def get_context_data(self, *, object_list=None, **kwargs):
         data = super().get_context_data(**kwargs)
-        data['todo'] = self.get_object()
+        data['todo'] = self.object
         data['title'] = data['todo']
         return data
 

@@ -1,0 +1,25 @@
+{% extends 'todos_app/base.html' %}
+{% block content %}
+<section class="vh-100">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-12 col-xl-4">
+                <div class="card" style="border-radius: 15px;">
+                    <div class="card-body text-center">
+                        <div class="mt-3 mb-4">
+                            <img src="{{ user.profile.avatar.url }}" class="rounded-circle img-fluid"
+                                 style="width: 100px;"/>
+                        </div>
+                        <h4 class="mb-2">{{ user.username }}</h4>
+                        {% if user.email %}
+                        <p class="text-muted mb-4">Email: <span class="mx-2"></span>{{ user.email }}</p>
+                        {% endif %}
+                        <a class="btn btn-primary btn-rounded" href="/">Update profile</a>
+                        <a class="btn btn-success btn-rounded" href="/">Change Password</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -2,27 +2,32 @@
 {% block content %}
 
 {% if todos %}
-<h1>{{ todos.count }} {{ todos_status }} todos</h1>
+<div class="text-center">
+    <h1>{{ todos.count }} {{ todos_status }} todos</h1>
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+</div>
 
-{% for message in messages %}
-<p>{{ message }}</p>
-{% endfor %}
-
-{% for todo in todos %}
-<a href="{% url 'todos:updatetodo' todo.id %}">
-    <b>{{ todo.title }}</b>
-</a>
-
-{% if todo.description %}
-<p>{{ todo.description|truncatechars:64 }}</p>
-{% endif %}
-<br>
-<br>
-{% endfor %}
+<div class="row justify-content-sm-center">
+    <ul class="list-group">
+        {% for todo in todos %}
+        <a href="{% url 'todos:updatetodo' todo.id %}"
+           class="list-group-item list-group-item-action {% if todo.priority == 1 %}list-group-item-danger{% endif %} {% if todo.priority == 2 %}list-group-item-warning{% endif %} {% if todo.completed_at %}list-group-item-dark{% endif %}">
+            {{ todo.title }}
+            {% if todo.description %}
+            <p><small>{{ todo.description|truncatechars:64 }}</small></p>
+            {% endif %}
+        </a>
+        {% endfor %}
+    </ul>
+</div>
 
 {% else %}
-<h2>You don't have any todo!</h2>
-<a href="{% url 'todos:createtodo' %}">Create Todo</a>
+<div class="text-center">
+    <h2>You don't have any todo!</h2>
+    <a class="btn btn-primary" href="{% url 'todos:createtodo' %}">Create Todo</a>
+</div>
 {% endif %}
 
 {% endblock %}

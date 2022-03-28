@@ -35,7 +35,7 @@ class AllTodosView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         todos = Todos.objects.filter(
             user=self.request.user
-        ).values('id', 'title', 'description', 'priority')
+        ).values('id', 'title', 'description', 'priority', 'completed_at')
         return todos
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -53,7 +53,7 @@ class CompletedTodosView(LoginRequiredMixin, generic.ListView):
         todos = Todos.objects.filter(
             user=self.request.user,
             completed_at__isnull=False
-        ).values('id', 'title', 'description', 'priority')
+        ).values('id', 'title', 'description', 'priority', 'completed_at')
         return todos
 
     def get_context_data(self, *, object_list=None, **kwargs):

@@ -1,0 +1,29 @@
+{% extends 'accounts_app/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <p>
+                {{ field.label_tag }}<br>
+                {{ field }}
+                {% if field.help_text %}
+                <small style="color: grey">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+            {% endfor %}
+            </p>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+        <hr>
+
+        <div>
+            <p>Already have an account?</p> <a class="btn btn-success" href="{% url 'accounts:login' %}">Login</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

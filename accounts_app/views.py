@@ -1,6 +1,28 @@
 from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
+from django.views import generic
+from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
+
+from .forms import UserSignUpForm
 
 
 class Login(LoginView):
     template_name = 'accounts_app/login.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['title'] = 'Login'
+        return data
+
+
+class SignUpView(SuccessMessageMixin, generic.CreateView):
+    template_name = 'accounts_app/register.html'
+    success_message = 'You account was successfully created!'
+    success_url = reverse_lazy('accounts:login')
+    form_class = UserSignUpForm
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['title'] = 'Registration'
+        return data

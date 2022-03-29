@@ -21,6 +21,8 @@ from django.conf.urls.static import static
 from drf_spectacular.views import SpectacularSwaggerView, SpectacularRedocView, SpectacularAPIView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+from accounts_app.api.router import api_router as accounts_router
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
@@ -38,6 +40,7 @@ urlpatterns = [
     ),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('accounts/', include(accounts_router.urls)),
 
     # debug tool
     path('__debug__/', include('debug_toolbar.urls')),

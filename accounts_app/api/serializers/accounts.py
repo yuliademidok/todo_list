@@ -19,3 +19,9 @@ class UserSerializer(serializers.ModelSerializer):
         required=False,
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
+
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data['password'])
+        instance.save()
+        return instance
+

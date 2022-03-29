@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import permissions
 from rest_framework.viewsets import GenericViewSet
-from rest_framework.mixins import CreateModelMixin, UpdateModelMixin
+from rest_framework.mixins import CreateModelMixin, UpdateModelMixin, RetrieveModelMixin
 
 from ...api.serializers.accounts import UserSerializer
 
@@ -17,7 +17,7 @@ class IsCreationOrIsAuthenticated(permissions.BasePermission):
         return obj == request.user
 
 
-class UserViewSet(GenericViewSet, CreateModelMixin, UpdateModelMixin):
+class UserViewSet(GenericViewSet, CreateModelMixin, UpdateModelMixin, RetrieveModelMixin):
     serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = (IsCreationOrIsAuthenticated, )

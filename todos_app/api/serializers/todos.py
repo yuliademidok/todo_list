@@ -23,3 +23,16 @@ class CreateTodoSerializer(serializers.ModelSerializer):
         default=serializers.CurrentUserDefault(),
         source='user'
     )
+
+
+class CompleteTodoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Todos
+        read_only_fields = (
+            'title',
+            'description',
+            'created_at',
+            'completed_at',
+            'priority'
+        )
+        exclude = ('user', 'priority')

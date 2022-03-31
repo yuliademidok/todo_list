@@ -36,10 +36,6 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
 
-    # def update(self, instance, validated_data):
-    #     instance.save()
-    #     return instance
-
 
 class PasswordSerializer(serializers.ModelSerializer):
     old_password = serializers.CharField(required=True)
@@ -60,7 +56,7 @@ class PasswordSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         if data['new_password1'] != data['new_password2']:
-            raise serializers.ValidationError({'new_password2': ('Passwords doesn\'t match')})
+            raise serializers.ValidationError({'new_password2': 'Passwords doesn\'t match'})
         return data
 
     def save(self, **kwargs):

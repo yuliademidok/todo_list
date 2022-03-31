@@ -28,16 +28,17 @@ class TodoViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveMode
     def get_serializer_class(self):
         return self.actions_serializers.get(self.action, self.serializer_class)
 
-    # @action(methods=['patch'], url_path='(?P<todo_id>[^/.]+)/complete', detail=False)
-    # def complete(self, request, todo_id=None):
-    #     queryset = Todos.objects.filter(id=todo_id, user=request.user)
-    #     serializer = CompleteTodoSerializer(instance=queryset, data=request.data, many=False, partial=True)
-    #
-    #     if serializer.is_valid():
-    #         serializer.data['completed_at'] = timezone.now()
-    #         serializer = serializer
-    #         serializer.save()
-    #     return Response(serializer.data)
+    @action(methods=['get'], url_path='completed', detail=False)
+    def completed_todos(self, request):
+        queryset = self.get_queryset().filter(user=request.user, completed_at__isnull=False)
+        serializer = self.get_serializer(instance=queryset, many=True)
+        return Response(serializer.data)
+
+    @action(methods=['get'], url_path='current', detail=False)
+    def current_todos(self, request):
+        queryset = self.get_queryset().filter(user=request.user, completed_at__isnull=True)
+        serializer = self.get_serializer(instance=queryset, many=True)
+        return Response(serializer.data)
 
 
 class CompeteTodoViewSet(GenericViewSet, UpdateModelMixin):

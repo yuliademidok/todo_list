@@ -20,9 +20,9 @@ class TodoViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveMode
     filter_backends = (IsOwnerFilterBackend, )
 
     actions_serializers = {
-        "create": CreateTodoSerializer,
-        "update": CreateTodoSerializer,
-        "partial_update": CreateTodoSerializer,
+        'create': CreateTodoSerializer,
+        'update': CreateTodoSerializer,
+        "'partial_update": CreateTodoSerializer,
     }
 
     def get_serializer_class(self):
@@ -44,7 +44,7 @@ class TodoViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveMode
 class CompeteTodoViewSet(GenericViewSet, UpdateModelMixin):
     serializer_class = CompleteTodoSerializer
     queryset = Todos.objects.all()
-    http_method_names = ("patch", )
+    http_method_names = ('patch', )
 
     filter_backends = (IsOwnerFilterBackend, )
 

@@ -3,7 +3,7 @@ from rest_framework import permissions
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import CreateModelMixin, UpdateModelMixin, RetrieveModelMixin
 
-from ...api.serializers.accounts import UserSerializer
+from ...api.serializers.accounts import UserSerializer, PasswordSerializer
 
 
 class IsCreationOrIsAuthenticated(permissions.BasePermission):
@@ -21,3 +21,8 @@ class UserViewSet(GenericViewSet, CreateModelMixin, UpdateModelMixin, RetrieveMo
     serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = (IsCreationOrIsAuthenticated, )
+
+
+class ChangePasswordViewSet(GenericViewSet, CreateModelMixin):
+    serializer_class = PasswordSerializer
+    queryset = User.objects.all()

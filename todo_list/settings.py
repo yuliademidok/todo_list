@@ -69,10 +69,11 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "TodoListGram API",
-    "VERSION": "0.0.1",
-    "COMPONENT_SPLIT_REQUEST": True,
-    "SWAGGER_UI_SETTINGS": {"deepLinking": True, "persistAuthorization": True, "displayOperationId": True, },
+    'TITLE': 'TodoListGram API',
+    'SCHEMA_PATH_PREFIX': r'/api',
+    'VERSION': "0.0.1",
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SWAGGER_UI_SETTINGS': {'deepLinking': True, 'persistAuthorization': True, 'displayOperationId': True, },
 }
 
 TEMPLATES = [

@@ -41,9 +41,8 @@ urlpatterns = [
     ),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('accounts/', include(accounts_router.urls)),
-    path('accounts/', include(accounts_router.urls)),
-    path('todos/', include(todos_router.urls)),
+    path('api/accounts/', include(accounts_router.urls)),
+    path('api/todos/', include(todos_router.urls)),
 
     # debug tool
     path('__debug__/', include('debug_toolbar.urls')),

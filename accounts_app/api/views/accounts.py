@@ -1,26 +1,23 @@
 from django.contrib.auth.models import User
-from rest_framework import permissions
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import CreateModelMixin, UpdateModelMixin, RetrieveModelMixin
 
-from ...api.serializers.accounts import UserSerializer, PasswordSerializer
-
-
-class IsCreationOrIsAuthenticated(permissions.BasePermission):
-    def has_permission(self, request, view):
-        if view.action == 'create' or request.user.is_authenticated:
-            return True
-        else:
-            return False
-
-    def has_object_permission(self, request, view, obj):
-        return obj == request.user
+from ..permissions import IsCreationOrIsAuthenticated
+from ...api.serializers.accounts import UserSerializer, PasswordSerializer, UpdateUserSerializer
 
 
 class UserViewSet(GenericViewSet, CreateModelMixin, UpdateModelMixin, RetrieveModelMixin):
     serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = (IsCreationOrIsAuthenticated, )
+
+    actions_serializers = {
+        'update': UpdateUserSerializer,
+        'partial_update': UpdateUserSerializer,
+    }
+
+    def get_serializer_class(self):
+        return self.actions_serializers.get(self.action, self.serializer_class)
 
 
 class ChangePasswordViewSet(GenericViewSet, CreateModelMixin):

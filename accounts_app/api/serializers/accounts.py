@@ -26,6 +26,21 @@ class UserSerializer(serializers.ModelSerializer):
         return instance
 
 
+class UpdateUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', )
+
+    email = serializers.EmailField(
+        required=False,
+        validators=[UniqueValidator(queryset=User.objects.all())]
+    )
+
+    # def update(self, instance, validated_data):
+    #     instance.save()
+    #     return instance
+
+
 class PasswordSerializer(serializers.ModelSerializer):
     old_password = serializers.CharField(required=True)
     new_password1 = serializers.CharField(required=True)

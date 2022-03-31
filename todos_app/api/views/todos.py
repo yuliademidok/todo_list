@@ -22,7 +22,7 @@ class TodoViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveMode
     actions_serializers = {
         'create': CreateTodoSerializer,
         'update': CreateTodoSerializer,
-        "'partial_update": CreateTodoSerializer,
+        'partial_update': CreateTodoSerializer,
     }
 
     def get_serializer_class(self):

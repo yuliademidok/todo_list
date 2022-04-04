@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from .models import Todos
+from todos_app.models import Todos
 
 
 class TodoForm(ModelForm):

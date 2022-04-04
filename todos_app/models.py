@@ -2,12 +2,13 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-class Todos(models.Model):
-    class Priority(models.IntegerChoices):
-        HIGH = 1, 'High'
-        MEDIUM = 2, 'Medium'
-        LOW = 3, 'Low'
+class Priority(models.IntegerChoices):
+    HIGH = 1, 'High'
+    MEDIUM = 2, 'Medium'
+    LOW = 3, 'Low'
 
+
+class Todos(models.Model):
     title = models.CharField(max_length=64, null=False, blank=False)
     description = models.TextField(max_length=256, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

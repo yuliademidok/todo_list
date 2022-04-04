@@ -5,7 +5,7 @@ from django.views import generic
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
 
-from .forms import UserSignUpForm
+from accounts_app.forms import UserSignUpForm
 
 
 class Login(LoginView):

@@ -6,8 +6,8 @@ from django.utils import timezone
 from django.views import generic
 from django.shortcuts import get_object_or_404, redirect
 
-from .forms import TodoForm
-from .models import Todos
+from todos_app.forms import TodoForm
+from todos_app.models import Todos
 
 
 class CurrentTodosView(LoginRequiredMixin, generic.ListView):

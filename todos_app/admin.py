@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Todos
+from todos_app.models import Todos
 
 
 @admin.register(Todos)

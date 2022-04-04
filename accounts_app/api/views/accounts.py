@@ -2,8 +2,8 @@ from django.contrib.auth.models import User
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import CreateModelMixin, UpdateModelMixin, RetrieveModelMixin
 
-from ..permissions import IsCreationOrIsAuthenticated
-from ...api.serializers.accounts import UserSerializer, PasswordSerializer, UpdateUserSerializer
+from accounts_app.api.permissions import IsCreationOrIsAuthenticated
+from accounts_app.api.serializers.accounts import UserSerializer, PasswordSerializer, UpdateUserSerializer
 
 
 class UserViewSet(GenericViewSet, CreateModelMixin, UpdateModelMixin, RetrieveModelMixin):

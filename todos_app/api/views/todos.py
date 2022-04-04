@@ -1,23 +1,35 @@
 from django.utils import timezone
-from rest_framework import status
-from rest_framework.decorators import action
-from rest_framework.response import Response
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import (
     RetrieveModelMixin, ListModelMixin, CreateModelMixin, UpdateModelMixin, DestroyModelMixin
 )
 
-from ..filters.todos import IsOwnerFilterBackend
-from ...api.serializers.todos import TodoSerializer, CreateTodoSerializer, CompleteTodoSerializer
-from ...models import Todos
+from todos_app.api.filters.todos import IsOwnerFilterBackend
+from todos_app.api.serializers.todos import TodoSerializer, CreateTodoSerializer, CompleteTodoSerializer
+from todos_app.models import Todos
 
 
 class TodoViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveModelMixin,
                   UpdateModelMixin, DestroyModelMixin):
     serializer_class = TodoSerializer
-    queryset = Todos.objects.all()
+    filter_backends = (IsOwnerFilterBackend,)
 
-    filter_backends = (IsOwnerFilterBackend, )
+    def get_queryset(self):
+        queryset = Todos.objects.all()
+        status = self.request.query_params.get('status')
+        if status == 'completed':
+            queryset = queryset.filter(completed_at__isnull=False)
+        elif status == 'current':
+            queryset = queryset.filter(completed_at__isnull=True)
+        return queryset
+
+    @extend_schema(parameters=[OpenApiParameter(name='status',
+                                                location=OpenApiParameter.QUERY,
+                                                description='Todo status', required=False,
+                                                type=str, enum=['completed', 'current'])],)
+    def list(self, request, *args, **kwargs):
+        return super().list(request)
 
     actions_serializers = {
         'create': CreateTodoSerializer,
@@ -28,25 +40,13 @@ class TodoViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveMode
     def get_serializer_class(self):
         return self.actions_serializers.get(self.action, self.serializer_class)
 
-    @action(methods=['get'], url_path='completed', detail=False)
-    def completed_todos(self, request):
-        queryset = self.get_queryset().filter(user=request.user, completed_at__isnull=False)
-        serializer = self.get_serializer(instance=queryset, many=True)
-        return Response(serializer.data)
-
-    @action(methods=['get'], url_path='current', detail=False)
-    def current_todos(self, request):
-        queryset = self.get_queryset().filter(user=request.user, completed_at__isnull=True)
-        serializer = self.get_serializer(instance=queryset, many=True)
-        return Response(serializer.data)
-
 
 class CompeteTodoViewSet(GenericViewSet, UpdateModelMixin):
     serializer_class = CompleteTodoSerializer
     queryset = Todos.objects.all()
-    http_method_names = ('patch', )
+    http_method_names = ('patch',)
 
-    filter_backends = (IsOwnerFilterBackend, )
+    filter_backends = (IsOwnerFilterBackend,)
 
     def perform_update(self, serializer):
         if serializer.instance.completed_at is None:

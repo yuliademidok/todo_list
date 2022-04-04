@@ -1,4 +1,7 @@
 from django.contrib.auth.models import User
+from rest_framework import status
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import CreateModelMixin, UpdateModelMixin, RetrieveModelMixin
 
@@ -19,7 +22,12 @@ class UserViewSet(GenericViewSet, CreateModelMixin, UpdateModelMixin, RetrieveMo
     def get_serializer_class(self):
         return self.actions_serializers.get(self.action, self.serializer_class)
 
+    @action(methods=['post'], url_path='changepassword', serializer_class=PasswordSerializer, detail=False)
+    def change_password(self, request):
+        serializer = self.get_serializer(data=request.data)
 
-class ChangePasswordViewSet(GenericViewSet, CreateModelMixin):
-    serializer_class = PasswordSerializer
-    queryset = User.objects.all()
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

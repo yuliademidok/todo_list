@@ -7,17 +7,7 @@ class TodoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Todos
         exclude = ('user', )
-
-    publisher_user = serializers.HiddenField(
-        default=serializers.CurrentUserDefault(),
-        source='user'
-    )
-
-
-class CreateTodoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Todos
-        exclude = ('user', 'completed_at')
+        read_only_fields = ('completed_at', )
 
     publisher_user = serializers.HiddenField(
         default=serializers.CurrentUserDefault(),
@@ -35,4 +25,4 @@ class CompleteTodoSerializer(serializers.ModelSerializer):
             'completed_at',
             'priority'
         )
-        exclude = ('user', 'priority')
+        exclude = ('user', )

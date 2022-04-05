@@ -20,11 +20,6 @@ class UserSerializer(serializers.ModelSerializer):
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
 
-    def update(self, instance, validated_data):
-        instance.set_password(validated_data['password'])
-        instance.save()
-        return instance
-
 
 class UpdateUserSerializer(serializers.ModelSerializer):
     class Meta:

@@ -6,7 +6,7 @@ from rest_framework.mixins import (
 )
 
 from todos_app.api.filters.todos import IsOwnerFilterBackend
-from todos_app.api.serializers.todos import TodoSerializer, CreateTodoSerializer, CompleteTodoSerializer
+from todos_app.api.serializers.todos import TodoSerializer, CompleteTodoSerializer
 from todos_app.models import Todos
 
 
@@ -30,15 +30,6 @@ class TodoViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveMode
                                                 type=str, enum=['completed', 'current'])],)
     def list(self, request, *args, **kwargs):
         return super().list(request)
-
-    actions_serializers = {
-        'create': CreateTodoSerializer,
-        'update': CreateTodoSerializer,
-        'partial_update': CreateTodoSerializer,
-    }
-
-    def get_serializer_class(self):
-        return self.actions_serializers.get(self.action, self.serializer_class)
 
 
 class CompeteTodoViewSet(GenericViewSet, UpdateModelMixin):

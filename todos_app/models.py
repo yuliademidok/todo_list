@@ -15,6 +15,14 @@ class Todos(models.Model):
     completed_at = models.DateTimeField(null=True, blank=True)
     priority = models.PositiveSmallIntegerField(choices=Priority.choices, default=2)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='todos')
+    parent_id = models.ForeignKey(
+        'self',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        default=None,
+        related_query_name='subtasks'
+    )
 
     class Meta:
         db_table = 'todos'

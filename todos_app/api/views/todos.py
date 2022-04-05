@@ -15,8 +15,15 @@ class TodoViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveMode
     serializer_class = TodoSerializer
     filter_backends = (IsOwnerFilterBackend,)
 
+    @staticmethod
+    def get_serialized(keyword):
+        queryset = Todos.objects.filter(parent_id=keyword)
+        serializer = TodoSerializer(queryset, many=True)
+        data = serializer.data
+        return data["json"]
+
     def get_queryset(self):
-        queryset = Todos.objects.all()
+        queryset = Todos.objects.filter(parent_id__isnull=True)
         status = self.request.query_params.get('status')
         if status == 'completed':
             queryset = queryset.filter(completed_at__isnull=False)

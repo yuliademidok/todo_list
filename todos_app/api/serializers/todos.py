@@ -14,12 +14,6 @@ class TodoSerializer(serializers.ModelSerializer):
         source='user'
     )
 
-    # def validate(self, data):
-    #     if not self.instance and data['parent_id'] and \
-    #             data['parent_id'] not in Todos.objects.filter(user=data['user'].id, parent_id__isnull=True):
-    #         raise serializers.ValidationError('Invalid id')
-    #     return data
-
     subtasks = serializers.SerializerMethodField()
 
     def get_subtasks(self, instance) -> list:
@@ -38,3 +32,21 @@ class CompleteTodoSerializer(serializers.ModelSerializer):
             'parent_id'
         )
         exclude = ('user', )
+
+
+class SubtaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Todos
+        exclude = ('user', )
+        read_only_fields = ('completed_at', )
+
+    publisher_user = serializers.HiddenField(
+        default=serializers.CurrentUserDefault(),
+        source='user'
+    )
+
+    def validate(self, data):
+        if data['parent_id'] and \
+                data['parent_id'] not in Todos.objects.filter(user=data['user'].id, parent_id__isnull=True):
+            raise serializers.ValidationError('Invalid id')
+        return data

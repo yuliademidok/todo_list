@@ -1,12 +1,15 @@
 from django.utils import timezone
 from drf_spectacular.utils import extend_schema, OpenApiParameter
+from rest_framework import status
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import (
     RetrieveModelMixin, ListModelMixin, CreateModelMixin, UpdateModelMixin, DestroyModelMixin
 )
 
 from todos_app.api.filters.todos import IsOwnerFilterBackend
-from todos_app.api.serializers.todos import TodoSerializer, CompleteTodoSerializer
+from todos_app.api.serializers.todos import TodoSerializer, CompleteTodoSerializer, SubtaskSerializer
 from todos_app.models import Todos
 
 
@@ -37,6 +40,16 @@ class TodoViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveMode
                                                 type=str, enum=['completed', 'current'])],)
     def list(self, request, *args, **kwargs):
         return super().list(request)
+
+    @action(methods=['post'], url_path='(?P<todo_id>[^/.]+)/createsubtask',
+            serializer_class=SubtaskSerializer, detail=False)
+    def create_subtask(self, request, todo_id=None):
+        request.data['parent_id'] = int(todo_id)
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CompeteTodoViewSet(GenericViewSet, UpdateModelMixin):

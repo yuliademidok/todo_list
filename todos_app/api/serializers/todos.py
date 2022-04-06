@@ -6,7 +6,7 @@ from todos_app.models import Todos
 class TodoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Todos
-        exclude = ('user', )
+        exclude = ('user', 'parent_id', )
         read_only_fields = ('completed_at', )
 
     publisher_user = serializers.HiddenField(
@@ -14,11 +14,11 @@ class TodoSerializer(serializers.ModelSerializer):
         source='user'
     )
 
-    def validate(self, data):
-        if data['parent_id'] and \
-                data['parent_id'] not in Todos.objects.filter(user=data['user'].id, parent_id__isnull=True):
-            raise serializers.ValidationError('Invalid id')
-        return data
+    # def validate(self, data):
+    #     if not self.instance and data['parent_id'] and \
+    #             data['parent_id'] not in Todos.objects.filter(user=data['user'].id, parent_id__isnull=True):
+    #         raise serializers.ValidationError('Invalid id')
+    #     return data
 
     subtasks = serializers.SerializerMethodField()
 

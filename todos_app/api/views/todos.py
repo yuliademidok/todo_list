@@ -94,4 +94,3 @@ class SubtasksViewSet(GenericViewSet, ListModelMixin, RetrieveModelMixin, Update
                                                 type=str, enum=['completed', 'current'])], )
     def list(self, request, *args, **kwargs):
         return super().list(request)
-

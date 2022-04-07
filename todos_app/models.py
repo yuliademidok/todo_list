@@ -21,7 +21,7 @@ class Todos(models.Model):
         blank=True,
         on_delete=models.CASCADE,
         default=None,
-        related_query_name='subtasks'
+        related_name='subtasks'
     )
 
     class Meta:

@@ -26,7 +26,7 @@ class TodoViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveMode
         return data["json"]
 
     def get_queryset(self):
-        queryset = Todos.objects.filter(parent_id__isnull=True)
+        queryset = Todos.objects.filter(user=self.request.user, parent_id__isnull=True)
         status = self.request.query_params.get('status')
         if status == 'completed':
             queryset = queryset.filter(completed_at__isnull=False)
@@ -50,6 +50,16 @@ class TodoViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveMode
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(methods=['get'], url_path='(?P<todo_id>[^/.]+)/subtasks',
+            serializer_class=SubtaskSerializer, detail=False)
+    def get_subtasks(self, request, todo_id=None):
+        instance = self.filter_queryset(self.get_queryset())
+        if int(todo_id) not in [i.id for i in instance]:
+            return Response({'detail': "Not found."}, status=status.HTTP_404_NOT_FOUND)
+        instance = instance.get(pk=todo_id)
+        serializer = self.get_serializer(instance.subtasks.all(), many=True)
+        return Response(serializer.data)
 
 
 class CompeteTodoViewSet(GenericViewSet, UpdateModelMixin):

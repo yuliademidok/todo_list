@@ -46,7 +46,11 @@ class SubtaskSerializer(serializers.ModelSerializer):
     )
 
     def validate(self, data):
-        if data['parent_id'] and \
-                data['parent_id'] not in Todos.objects.filter(user=data['user'].id, parent_id__isnull=True):
-            raise serializers.ValidationError('Invalid id')
+        try:
+            user_id = self.instance.user.id
+        except AttributeError:
+            user_id =data['user'].id
+        if 'parent_id' in data and data['parent_id'] and \
+                data['parent_id'] not in Todos.objects.filter(user=user_id, parent_id__isnull=True):
+            raise serializers.ValidationError('Invalid parent id')
         return data

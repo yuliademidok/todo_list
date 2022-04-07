@@ -63,3 +63,25 @@ class CompeteTodoViewSet(GenericViewSet, UpdateModelMixin):
         if serializer.instance.completed_at is None:
             serializer.instance.completed_at = timezone.now()
             serializer.save()
+
+
+class SubtasksViewSet(GenericViewSet, ListModelMixin, RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin):
+    serializer_class = SubtaskSerializer
+    filter_backends = (IsOwnerFilterBackend,)
+
+    def get_queryset(self):
+        queryset = Todos.objects.filter(parent_id__isnull=False)
+        status = self.request.query_params.get('status')
+        if status == 'completed':
+            queryset = queryset.filter(completed_at__isnull=False)
+        elif status == 'current':
+            queryset = queryset.filter(completed_at__isnull=True)
+        return queryset
+
+    @extend_schema(parameters=[OpenApiParameter(name='status',
+                                                location=OpenApiParameter.QUERY,
+                                                description='Todo status', required=False,
+                                                type=str, enum=['completed', 'current'])], )
+    def list(self, request, *args, **kwargs):
+        return super().list(request)
+

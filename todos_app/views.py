@@ -17,14 +17,15 @@ class CurrentTodosView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         todos = Todos.objects.filter(
             user=self.request.user,
-            completed_at__isnull=True
-        ).values('id', 'title', 'description', 'priority')
+            completed_at__isnull=True,
+            parent_id__isnull=True,
+        ).prefetch_related('subtasks')
         return todos
 
     def get_context_data(self, *, object_list=None, **kwargs):
         data = super().get_context_data(**kwargs)
-        data['title'] = "Current todos"
-        data['todos_status'] = "current"
+        data['title'] = 'Current todos'
+        data['todos_status'] = 'current'
         return data
 
 
@@ -34,8 +35,9 @@ class AllTodosView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         todos = Todos.objects.filter(
-            user=self.request.user
-        ).values('id', 'title', 'description', 'priority', 'completed_at')
+            user=self.request.user,
+            parent_id__isnull=True,
+        ).prefetch_related('subtasks')
         return todos
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -52,8 +54,9 @@ class CompletedTodosView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         todos = Todos.objects.filter(
             user=self.request.user,
-            completed_at__isnull=False
-        ).values('id', 'title', 'description', 'priority', 'completed_at')
+            completed_at__isnull=False,
+            parent_id__isnull=True,
+        ).prefetch_related('subtasks')
         return todos
 
     def get_context_data(self, *, object_list=None, **kwargs):

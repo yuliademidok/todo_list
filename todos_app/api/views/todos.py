@@ -54,11 +54,17 @@ class TodoViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveMode
     @action(methods=['get'], url_path='(?P<todo_id>[^/.]+)/subtasks',
             serializer_class=SubtaskSerializer, detail=False)
     def get_subtasks(self, request, todo_id=None):
-        instance = self.filter_queryset(self.get_queryset())
-        if int(todo_id) not in [i.id for i in instance]:
+        queryset = self.filter_queryset(self.get_queryset())
+        if int(todo_id) not in [i.id for i in queryset]:
             return Response({'detail': "Not found."}, status=status.HTTP_404_NOT_FOUND)
-        instance = instance.get(pk=todo_id)
-        serializer = self.get_serializer(instance.subtasks.all(), many=True)
+        queryset = queryset.get(pk=todo_id).subtasks.all()
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
 

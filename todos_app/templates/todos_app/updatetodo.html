@@ -36,10 +36,12 @@
         </form>
         {% endif %}
 
+        {% if todo.parent_id is None %}
         <form method="POST" action="{% url 'todos:createsubtask' todo.id %}">
             {% csrf_token %}
             <button type="submit" class="btn btn-warning">Create subtask</button>
         </form>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

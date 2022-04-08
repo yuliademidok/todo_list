@@ -35,6 +35,11 @@
             <button type="submit" class="btn btn-success">Complete</button>
         </form>
         {% endif %}
+
+        <form method="POST" action="{% url 'todos:createsubtask' todo.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-warning">Create subtask</button>
+        </form>
     </div>
 </div>
 {% endblock %}

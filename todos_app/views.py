@@ -83,6 +83,24 @@ class CreateTodoView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView
         return data
 
 
+class CreateSubtaskView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
+    model = Todos
+    form_class = TodoForm
+    template_name = 'todos_app/create_todo.html'
+    success_url = reverse_lazy('todos:currenttodos')
+    success_message = 'New subtask is successfully added!'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.parent_id = self.get_object()
+        return super(CreateSubtaskView, self).form_valid(form)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['title'] = 'Create subtask'
+        return data
+
+
 class UpdateTodoView(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     model = Todos
     form_class = TodoForm

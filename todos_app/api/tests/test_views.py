@@ -21,8 +21,18 @@ class TestTodosApi(APITestCase):
             user=self.user
         )
 
+        self.subtasks_1 = Todos.objects.create(
+            title='Subtask 1',
+            description='Subtask 1 description',
+            priority=1,
+            user=self.user,
+            parent_id=self.todo_1
+        )
+
         self.todos_url = reverse('TodoViewSet-list')
         self.todo_url = reverse('TodoViewSet-detail', args=[self.todo_1.id])
+        self.subtask_url = reverse('SubtasksViewSet-detail', args=[self.subtasks_1.id])
+        self.create_subtask_url = reverse('TodoViewSet-create-subtask', args=[self.todo_1.id])
 
     def test_create_todo(self):
         todos_count_before = Todos.objects.count()
@@ -99,3 +109,21 @@ class TestTodosApi(APITestCase):
         response = self.client.patch(complete_todo_url)
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(response.data['completed_at'], None)
+
+    def test_get_subtasks(self):
+        response = self.client.get(self.subtask_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.subtasks_1)
+
+    def test_create_subtask(self):
+        response = self.client.post(self.create_subtask_url, {
+            'title': 'Subtask 2',
+            'description': 'Subtask 2 description',
+            'priority': 2
+        }, format='json')
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.data['title'], 'Subtask 2')
+        self.assertEqual(response.data['description'], 'Subtask 2 description')
+        self.assertEqual(response.data['priority'], 2)
+        self.assertEqual(response.data['completed_at'], None)
+        self.assertEqual(response.data['parent_id'], self.todo_1.id)

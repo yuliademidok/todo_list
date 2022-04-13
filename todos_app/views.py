@@ -6,8 +6,8 @@ from django.utils import timezone
 from django.views import generic
 from django.shortcuts import get_object_or_404, redirect
 
-from .forms import TodoForm
-from .models import Todos
+from todos_app.forms import TodoForm
+from todos_app.models import Todos
 
 
 class CurrentTodosView(LoginRequiredMixin, generic.ListView):
@@ -17,14 +17,15 @@ class CurrentTodosView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         todos = Todos.objects.filter(
             user=self.request.user,
-            completed_at__isnull=True
-        ).values('id', 'title', 'description', 'priority')
+            completed_at__isnull=True,
+            parent_id__isnull=True,
+        ).prefetch_related('subtasks')
         return todos
 
     def get_context_data(self, *, object_list=None, **kwargs):
         data = super().get_context_data(**kwargs)
-        data['title'] = "Current todos"
-        data['todos_status'] = "current"
+        data['title'] = 'Current todos'
+        data['todos_status'] = 'current'
         return data
 
 
@@ -34,8 +35,9 @@ class AllTodosView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         todos = Todos.objects.filter(
-            user=self.request.user
-        ).values('id', 'title', 'description', 'priority', 'completed_at')
+            user=self.request.user,
+            parent_id__isnull=True,
+        ).prefetch_related('subtasks')
         return todos
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -52,8 +54,9 @@ class CompletedTodosView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         todos = Todos.objects.filter(
             user=self.request.user,
-            completed_at__isnull=False
-        ).values('id', 'title', 'description', 'priority', 'completed_at')
+            completed_at__isnull=False,
+            parent_id__isnull=True,
+        ).prefetch_related('subtasks')
         return todos
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -77,6 +80,24 @@ class CreateTodoView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView
     def get_context_data(self, *, object_list=None, **kwargs):
         data = super().get_context_data(**kwargs)
         data['title'] = 'Create todo'
+        return data
+
+
+class CreateSubtaskView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
+    model = Todos
+    form_class = TodoForm
+    template_name = 'todos_app/create_todo.html'
+    success_url = reverse_lazy('todos:currenttodos')
+    success_message = 'New subtask is successfully added!'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.parent_id = self.get_object()
+        return super(CreateSubtaskView, self).form_valid(form)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['title'] = 'Create subtask'
         return data
 
 

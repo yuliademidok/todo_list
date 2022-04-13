@@ -19,6 +19,19 @@
             <p><small>{{ todo.description|truncatechars:64 }}</small></p>
             {% endif %}
         </a>
+        {% if todo.subtasks.all %}
+        <div>Subtasks:</div>
+        {% for sub in todo.subtasks.all %}
+        <a href="{% url 'todos:updatetodo' sub.id %}"
+           class="list-group list-group-item-action {% if sub.priority == 1 %}list-group-item-danger{% endif %} {% if sub.priority == 2 %}list-group-item-warning{% endif %} {% if sub.completed_at %}list-group-item-dark{% endif %}">
+            - {{ sub.title }}
+            {% if sub.description %}
+            <p><small>{{ sub.description|truncatechars:64 }}</small></p>
+            {% endif %}
+        </a>
+        {% endfor %}
+        {% endif %}
+
         {% endfor %}
     </ul>
 </div>

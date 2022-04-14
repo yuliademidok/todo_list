@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import UpdateModelMixin, RetrieveModelMixin
 
+from accounts_app.api.permissions import IsCreationOrIsAuthenticated
 from accounts_app.api.serializers.accounts import UserSerializer, PasswordSerializer, UpdateUserSerializer
 
 
@@ -27,16 +28,10 @@ def signup(request):
 
 
 class UserViewSet(GenericViewSet, UpdateModelMixin, RetrieveModelMixin):
-    serializer_class = UserSerializer
+    serializer_class = UpdateUserSerializer
     queryset = User.objects.all()
 
-    actions_serializers = {
-        'update': UpdateUserSerializer,
-        'partial_update': UpdateUserSerializer,
-    }
-
-    def get_serializer_class(self):
-        return self.actions_serializers.get(self.action, self.serializer_class)
+    permission_classes = (IsCreationOrIsAuthenticated, )
 
     @action(methods=['post'], url_path='changepassword', serializer_class=PasswordSerializer, detail=False)
     def change_password(self, request):

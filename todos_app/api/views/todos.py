@@ -28,10 +28,9 @@ class TodoViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveMode
     def get_queryset(self):
         queryset = Todos.objects.filter(user=self.request.user, parent_id__isnull=True)
         status = self.request.query_params.get('status')
-        if status == 'completed':
-            queryset = queryset.filter(completed_at__isnull=False)
-        elif status == 'current':
-            queryset = queryset.filter(completed_at__isnull=True)
+        is_not_completed = status == 'current'
+        if status:
+            queryset = queryset.filter(completed_at__isnull=is_not_completed)
         return queryset
 
     @extend_schema(parameters=[OpenApiParameter(name='status',

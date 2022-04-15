@@ -26,11 +26,15 @@ from todos_app.api.router import api_router as todos_router
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # Apps
+    # Accounts
     path('api/accounts/', include('accounts_app.urls')),
-    path('api/todos/', include('todos_app.urls')),
+    path('api/accounts/', include(accounts_router.urls)),
 
-    # API
+    # Todos
+    path('api/todos/', include('todos_app.urls')),
+    path('api/todos/', include(todos_router.urls)),
+
+    # API Spectacular
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
     path(
@@ -38,9 +42,6 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(),
         name='swagger-ui',
     ),
-    path('api/accounts/', include(accounts_router.urls)),
-    path('api/todos/', include(todos_router.urls)),
-
     # debug tool
     path('__debug__/', include('debug_toolbar.urls')),
 ]

@@ -33,12 +33,16 @@ class UserViewSet(GenericViewSet, UpdateModelMixin, RetrieveModelMixin):
 
     permission_classes = (IsCreationOrIsAuthenticated, )
 
-    @action(methods=['post'], url_path='changepassword', serializer_class=PasswordSerializer, detail=False)
-    def change_password(self, request):
-        serializer = self.get_serializer(data=request.data)
 
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+@extend_schema(
+    responses={200: PasswordSerializer},
+    request=PasswordSerializer,
+)
+@api_view(['POST'])
+def change_password(request):
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = PasswordSerializer(data=data, context=request, many=False)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=200)

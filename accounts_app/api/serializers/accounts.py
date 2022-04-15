@@ -42,7 +42,7 @@ class PasswordSerializer(serializers.ModelSerializer):
         fields = ('old_password', 'new_password1', 'new_password2', )
 
     def validate_old_password(self, value):
-        user = self.context['request'].user
+        user = self.context.user
         if not user.check_password(value):
             raise serializers.ValidationError(
                 'Your old password is incorrect. Please try again.'
@@ -56,7 +56,7 @@ class PasswordSerializer(serializers.ModelSerializer):
 
     def save(self, **kwargs):
         password = self.validated_data['new_password1']
-        user = self.context['request'].user
+        user = self.context.user
         user.set_password(password)
         user.save()
         return user

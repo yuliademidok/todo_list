@@ -35,24 +35,4 @@ class TodoSerializer(serializers.ModelSerializer):
         source='user'
     )
 
-    # subtasks = serializers.SerializerMethodField()
     subtasks = SubtaskSerializer(many=True, read_only=True)
-
-    # def get_subtasks(self, instance) -> list:
-    #     return Todos.objects.filter(parent_id=instance.id).values()
-
-
-class CompleteTodoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Todos
-        read_only_fields = (
-            'title',
-            'description',
-            'created_at',
-            'completed_at',
-            'priority',
-            'parent_id'
-        )
-        exclude = ('user', )
-
-

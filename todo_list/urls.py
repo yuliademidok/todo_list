@@ -28,7 +28,7 @@ urlpatterns = [
 
     # Apps
     path('api/accounts/', include('accounts_app.urls')),
-    path('', include('todos_app.urls')),
+    path('api/todos/', include('todos_app.urls')),
 
     # API
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),

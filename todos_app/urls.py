@@ -4,6 +4,6 @@ from todos_app.api.views.todos import SubtasksListCreateView, complete_todo
 
 app_name = 'todos'
 urlpatterns = [
-    path('<int:pk>/subtasks', SubtasksListCreateView.as_view()),
-    path('complete/<int:pk>/', complete_todo),
+    path('<int:pk>/subtasks', SubtasksListCreateView.as_view(), name='todo_subtasks'),
+    path('complete/<int:pk>/', complete_todo, name='complete_todo'),
 ]

@@ -8,10 +8,9 @@ from todos_app.models import Todos
 class TestTodosApi(APITestCase):
     def setUp(self):
         self.credentials = {'username': 'test', 'password': 'testpass1'}
-        self.client.post(reverse('UserViewSet-list'), self.credentials)
-        login_response = self.client.post(reverse('token_obtain_pair'), self.credentials)
+        self.user = User.objects.create_user(**self.credentials)
+        login_response = self.client.post(reverse('accounts:login'), self.credentials)
         self.access_token = login_response.data['access']
-        self.user = User.objects.get(username='test')
         self.client.force_authenticate(user=self.user, token=self.access_token)
 
         self.todo_1 = Todos.objects.create(
@@ -31,8 +30,8 @@ class TestTodosApi(APITestCase):
 
         self.todos_url = reverse('TodoViewSet-list')
         self.todo_url = reverse('TodoViewSet-detail', args=[self.todo_1.id])
-        self.subtask_url = reverse('SubtasksViewSet-detail', args=[self.subtasks_1.id])
-        self.create_subtask_url = reverse('TodoViewSet-create-subtask', args=[self.todo_1.id])
+        self.subtasks_url = reverse('SubtasksViewSet-list')
+        self.todo_subtasks_url = reverse('todos:todo_subtasks', args=[self.todo_1.id])
 
     def test_create_todo(self):
         todos_count_before = Todos.objects.count()
@@ -105,18 +104,18 @@ class TestTodosApi(APITestCase):
             description='Description todo 5',
             user=self.user
         )
-        complete_todo_url = reverse('todos-detail', args=[todo.id])
+        complete_todo_url = reverse('todos:complete_todo', args=[todo.id])
         response = self.client.patch(complete_todo_url)
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(response.data['completed_at'], None)
-
-    def test_get_subtasks(self):
-        response = self.client.get(self.subtask_url)
+    #
+    def test_get_all_subtasks(self):
+        response = self.client.get(self.subtasks_url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.subtasks_1)
 
     def test_create_subtask(self):
-        response = self.client.post(self.create_subtask_url, {
+        response = self.client.post(self.todo_subtasks_url, {
             'title': 'Subtask 2',
             'description': 'Subtask 2 description',
             'priority': 2

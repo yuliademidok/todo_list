@@ -10,7 +10,7 @@ const LoginForm = () => {
   });
   const { username, password } = formFields;
 
-  const { setCurrentUser, setAccessToken, setRefreshToken } = useContext(UserContext);
+  const { setCurrentUser } = useContext(UserContext);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -25,11 +25,7 @@ const LoginForm = () => {
 
     try {
       const currentUser = await login(username, password);
-      // const {access, refresh} = currentUser
-      // console.log(access)
       setCurrentUser(currentUser);
-      // setAccessToken(access);
-      // setRefreshToken(refresh);
     } catch (error) {
       console.log("Error occure when login:", error);
       if (error.response.status || error.response.status === 401) {
@@ -37,7 +33,7 @@ const LoginForm = () => {
       }
     }
   };
-  
+
   return (
     <div>
       <h1>Sign In</h1>

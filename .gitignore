@@ -132,3 +132,5 @@ dmypy.json
 .media
 .data
 data/
+
+/node_modules

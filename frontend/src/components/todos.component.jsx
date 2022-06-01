@@ -4,6 +4,7 @@ import { getCurrentTodos } from "../utils/todos.utils";
 
 import { TodosContext } from "../context/todos.context";
 import TodoItem from "./todo-item.component";
+import { TodoItemsContainer } from "../app.styles";
 
 const Todos = () => {
   const {
@@ -26,9 +27,12 @@ const Todos = () => {
   return (
     <Fragment>
       <div>You have {currentTodosCount} uncompleted todos</div>
-      {currentTodos.map((todo) => (
-        <TodoItem key={todo.id} todo={todo}/>
-      ))}
+
+      <TodoItemsContainer>
+          {currentTodos.map((todo) => (
+            <TodoItem key={todo.id} todo={todo} />
+          ))}
+      </TodoItemsContainer>
     </Fragment>
   );
 };

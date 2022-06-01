@@ -26,6 +26,7 @@ export const login = async (username, password) => {
     });
 };
 
-export const logout = () => {
-  localStorage.removeItem("user");
+export const logout = async () => {
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
 };

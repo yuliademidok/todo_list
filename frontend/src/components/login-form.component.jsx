@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import { login } from "../utils/users.utils";
+import { UserContext } from "../context/user.context";
 
 const LoginForm = () => {
   const [formFields, setFromFields] = useState({
@@ -8,6 +9,8 @@ const LoginForm = () => {
     password: "",
   });
   const { username, password } = formFields;
+
+  const { setCurrentUser } = useContext(UserContext);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -22,7 +25,7 @@ const LoginForm = () => {
 
     try {
       const currentUser = await login(username, password);
-      console.log(currentUser);
+      setCurrentUser(currentUser);
     } catch (error) {
       if (error.response.status === 401) {
         alert("Incorrect username or password");

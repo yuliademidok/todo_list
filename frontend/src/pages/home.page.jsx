@@ -1,7 +1,11 @@
+import Todos from "../components/todos.component";
+
 const Home = () => {
   return (
-    <div>Home page</div>
-  )
-}
+    <div>
+      <Todos />
+    </div>
+  );
+};
 
 export default Home;

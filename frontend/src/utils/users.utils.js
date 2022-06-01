@@ -1,5 +1,6 @@
 import axios from "axios";
-const API_URL = "http://127.0.0.1:8000/api/accounts/login/";
+
+const API_URL = "/api/accounts/login/";
 
 export const login = async (username, password) => {
   return axios
@@ -14,12 +15,12 @@ export const login = async (username, password) => {
 
       if (response.data.access) {
         localStorage.setItem(
-          "accessToken",
-          JSON.stringify(response.data.access)
+          'accessToken',
+          response.data.access
         );
         localStorage.setItem(
           "refreshToken",
-          JSON.stringify(response.data.refresh)
+          response.data.refresh
         );
       }
       return response.data;

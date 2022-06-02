@@ -20,3 +20,24 @@ export const getCurrentTodos = (accessToken, callback) => {
       console.log(error);
     });
 };
+
+export const addTodo = async (todo, accessToken) => {
+  const { title, description, priority } = todo;
+  return axios
+    .post(
+      API_URL,
+      {
+        title,
+        description,
+        priority,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .then((response) => {
+      return response.data;
+    });
+};

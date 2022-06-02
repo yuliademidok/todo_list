@@ -4,9 +4,10 @@ import { getCurrentTodos } from "../utils/todos.utils";
 
 import { TodosContext } from "../context/todos.context";
 import TodoItem from "./todo-item.component";
+import AddTodoButton from "./add-todo-button.components";
 import { TodoItemsContainer } from "../app.styles";
 
-const Todos = () => {
+const Todos = ({}) => {
   const {
     currentTodos,
     setCurrentTodos,
@@ -26,13 +27,22 @@ const Todos = () => {
 
   return (
     <Fragment>
-      <div>You have {currentTodosCount} uncompleted todos</div>
+      {currentTodosCount ? (
+        <Fragment>
+          <h1>You have {currentTodosCount} uncompleted todos</h1>
 
-      <TodoItemsContainer>
-          {currentTodos.map((todo) => (
-            <TodoItem key={todo.id} todo={todo} />
-          ))}
-      </TodoItemsContainer>
+          <TodoItemsContainer>
+            {currentTodos.map((todo) => (
+              <TodoItem key={todo.id} todo={todo} />
+            ))}
+          </TodoItemsContainer>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <div>All todos are completed!</div>
+          <AddTodoButton />
+        </Fragment>
+      )}
     </Fragment>
   );
 };

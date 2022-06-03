@@ -3,13 +3,15 @@ import axios from "axios";
 const API_URL = "/api/todos/";
 const CURRENT_TODOS_URL = "?current";
 
+const headers = (accessToken) => ({
+  headers: {
+    Authorization: `Bearer ${accessToken}`,
+  },
+});
+
 export const getCurrentTodos = (accessToken, callback) => {
   return axios
-    .get(API_URL + CURRENT_TODOS_URL, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
+    .get(API_URL + CURRENT_TODOS_URL, headers(accessToken))
     .then((response) => {
       return response.data;
     })
@@ -23,11 +25,7 @@ export const getCurrentTodos = (accessToken, callback) => {
 
 export const getTodo = async (accessToken, todoId, callback) => {
   return axios
-    .get(API_URL + todoId + "/", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
+    .get(API_URL + todoId + "/", headers(accessToken))
     .then((response) => {
       return response.data;
     })
@@ -49,11 +47,7 @@ export const addTodo = async (todo, accessToken) => {
         description,
         priority,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
+      headers(accessToken)
     )
     .then((response) => {
       return response.data;
@@ -64,18 +58,22 @@ export const editTodo = async (todo, todoId, accessToken) => {
   const { title, description, priority } = todo;
   return axios
     .put(
-      API_URL + todoId + '/',
+      API_URL + todoId + "/",
       {
         title,
         description,
         priority,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
+      headers(accessToken)
     )
+    .then((response) => {
+      return response.data;
+    });
+};
+
+export const deleteTodo = async (todoId, accessToken) => {
+  return axios
+    .delete(API_URL + todoId + "/", headers(accessToken))
     .then((response) => {
       return response.data;
     });

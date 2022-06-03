@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  app:
+    build: .
+    volumes:
+      - .:/todo_list
+    ports:
+      - "8000:8000"
+    image: app:todo_list
+    container_name: todolist_container
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - db
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=todo_list
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=qwe123
+    container_name: postgres_db

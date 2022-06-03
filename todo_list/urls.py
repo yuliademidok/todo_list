@@ -18,13 +18,30 @@ from django.urls import path, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 from django.conf.urls.static import static
+from drf_spectacular.views import SpectacularSwaggerView, SpectacularRedocView, SpectacularAPIView
 
+from accounts_app.api.router import api_router as accounts_router
+from todos_app.api.router import api_router as todos_router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('accounts_app.urls')),
-    path('', include('todos_app.urls')),
 
+    # Accounts
+    path('api/accounts/', include('accounts_app.urls')),
+    path('api/accounts/', include(accounts_router.urls)),
+
+    # Todos
+    path('api/todos/', include('todos_app.urls')),
+    path('api/todos/', include(todos_router.urls)),
+
+    # API Spectacular
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path(
+        'api/swagger/',
+        SpectacularSwaggerView.as_view(),
+        name='swagger-ui',
+    ),
     # debug tool
     path('__debug__/', include('debug_toolbar.urls')),
 ]

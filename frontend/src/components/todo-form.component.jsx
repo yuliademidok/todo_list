@@ -11,6 +11,7 @@ import {
   TodoItemForm,
   InputTitle,
   InputDescription,
+  Title,
 } from "../app.styles";
 
 const defaultFormFields = {
@@ -19,7 +20,7 @@ const defaultFormFields = {
   priority: 2,
 };
 
-const TodoItem = () => {
+const TodoForm = () => {
   const params = useParams();
   const navigate = useNavigate();
 
@@ -66,7 +67,7 @@ const TodoItem = () => {
 
   return (
     <Fragment>
-      <h1>Edit todo</h1>
+      <Title>Edit todo</Title>
       <AddTodoContainer>
         <TodoItemForm onSubmit={handleSubmit}>
           <InputTitle
@@ -107,4 +108,4 @@ const TodoItem = () => {
   );
 };
 
-export default TodoItem;
+export default TodoForm;

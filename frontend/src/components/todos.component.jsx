@@ -1,13 +1,13 @@
 import { useEffect, useContext, Fragment } from "react";
 
-import { getCurrentTodos } from "../utils/todos.utils";
+import { getTodos } from "../utils/todos.utils";
 
 import { TodosContext } from "../context/todos.context";
 import TodoItem from "./todo-item.component";
 import AddTodoButton from "./add-todo-button.components";
-import { TodoItemsContainer } from "../app.styles";
+import { TodoItemsContainer, Title } from "../app.styles";
 
-const Todos = () => {
+const Todos = ({ status }) => {
   const {
     currentTodos,
     setCurrentTodos,
@@ -22,14 +22,23 @@ const Todos = () => {
       setCurrentTodosCount(count);
       setCurrentTodos(results);
     };
-    getCurrentTodos(accessToken, fetchTodos);
+    getTodos(accessToken, status, fetchTodos);
   }, []);
+
+  let todoStatus = "";
+  if (status.includes("completed")) {
+    todoStatus = "completed";
+  } else if (status.includes("current")) {
+    todoStatus = "uncompleted";
+  }
 
   return (
     <Fragment>
       {currentTodosCount ? (
         <Fragment>
-          <h1>You have {currentTodosCount} uncompleted todos</h1>
+          <Title>
+            You have {currentTodosCount} {todoStatus} todos
+          </Title>
 
           <TodoItemsContainer>
             {currentTodos.map((todo) => (

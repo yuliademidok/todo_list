@@ -1,11 +1,11 @@
 import Todos from "../components/todos.component";
 
-const Home = () => {
+const AllTodos = () => {
   return (
     <div>
-      <Todos status="?status=current" />
+      <Todos status="" />
     </div>
   );
 };
 
-export default Home;
+export default AllTodos;

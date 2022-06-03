@@ -1,9 +1,10 @@
-import { useContext } from "react";
+import { useContext, Fragment } from "react";
 import { Link, Outlet } from "react-router-dom";
 
-import { UserContext } from "../context/user.context";
 import { logout } from "../utils/users.utils";
+import { UserContext } from "../context/user.context";
 import AddTodoButton from "./add-todo-button.components";
+import { NavBar, NavBarItems } from "../app.styles";
 
 const Navigation = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
@@ -14,21 +15,25 @@ const Navigation = () => {
   };
 
   return (
-    <div>
-      <Link to="/current-todos">Current Todos</Link>
+    <Fragment>
+      <NavBar>
+        <NavBarItems>
+          <Link to="/current-todos">Current Todos</Link>
+          <Link to="/completed-todos">Completed Todos</Link>
+          <Link to="/all-todos">All Todos</Link>
+          <AddTodoButton />
 
-      {currentUser ? (
-        <Link onClick={signOutHandler} to="/">
-          Logout
-        </Link>
-      ) : (
-        <Link to="/">Login</Link>
-      )}
-
-      <AddTodoButton />
-
+          {currentUser ? (
+            <Link onClick={signOutHandler} to="/">
+              Logout
+            </Link>
+          ) : (
+            <Link to="/">Login</Link>
+          )}
+        </NavBarItems>
+      </NavBar>
       <Outlet />
-    </div>
+    </Fragment>
   );
 };
 

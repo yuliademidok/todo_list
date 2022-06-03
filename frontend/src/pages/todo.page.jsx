@@ -1,7 +1,7 @@
-import TodoItem from "../components/todo-item.components";
+import TodoForm from "../components/todo-form.component";
 
 const Todo = () => {
-  return <TodoItem />;
+  return <TodoForm />;
 };
 
 export default Todo;

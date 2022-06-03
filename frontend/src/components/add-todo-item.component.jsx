@@ -9,6 +9,7 @@ import {
   TodoItemForm,
   InputTitle,
   InputDescription,
+  Title
 } from "../app.styles";
 
 const defaultFormFields = {
@@ -56,7 +57,7 @@ const AddTodoItem = () => {
 
   return (
     <Fragment>
-      <h1>Add todo</h1>
+      <Title>Add todo</Title>
       <AddTodoContainer>
         <TodoItemForm onSubmit={handleSubmit}>
           <InputTitle

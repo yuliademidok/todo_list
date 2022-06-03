@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const API_URL = "/api/todos/";
-const CURRENT_TODOS_URL = "?current";
 
 const headers = (accessToken) => ({
   headers: {
@@ -9,9 +8,9 @@ const headers = (accessToken) => ({
   },
 });
 
-export const getCurrentTodos = (accessToken, callback) => {
+export const getTodos = (accessToken, status, callback) => {
   return axios
-    .get(API_URL + CURRENT_TODOS_URL, headers(accessToken))
+    .get(API_URL + status, headers(accessToken))
     .then((response) => {
       return response.data;
     })

@@ -1,10 +1,10 @@
 import { TodoItemForm, TodoTitle, TodoDescription } from "../app.styles";
 
 const TodoItem = ({ todo }) => {
-  const { title, description, priority } = todo;
+  const { id, title, description, priority } = todo;
   return (
     <TodoItemForm>
-      <TodoTitle to="/" value={priority}>{title}</TodoTitle>
+      <TodoTitle to={`/todo/${id}/`} value={priority}>{title}</TodoTitle>
       <TodoDescription>{description}</TodoDescription>
     </TodoItemForm>
   );

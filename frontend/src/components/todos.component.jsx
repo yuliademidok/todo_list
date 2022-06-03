@@ -7,7 +7,7 @@ import TodoItem from "./todo-item.component";
 import AddTodoButton from "./add-todo-button.components";
 import { TodoItemsContainer } from "../app.styles";
 
-const Todos = ({}) => {
+const Todos = () => {
   const {
     currentTodos,
     setCurrentTodos,

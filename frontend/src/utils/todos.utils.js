@@ -21,11 +21,50 @@ export const getCurrentTodos = (accessToken, callback) => {
     });
 };
 
+export const getTodo = async (accessToken, todoId, callback) => {
+  return axios
+    .get(API_URL + todoId + "/", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .then((data) => {
+      callback(data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
 export const addTodo = async (todo, accessToken) => {
   const { title, description, priority } = todo;
   return axios
     .post(
       API_URL,
+      {
+        title,
+        description,
+        priority,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .then((response) => {
+      return response.data;
+    });
+};
+
+export const editTodo = async (todo, todoId, accessToken) => {
+  const { title, description, priority } = todo;
+  return axios
+    .put(
+      API_URL + todoId + '/',
       {
         title,
         description,

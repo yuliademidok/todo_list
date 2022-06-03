@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 
 import { login } from "../utils/users.utils";
 import { UserContext } from "../context/user.context";
+import { Title } from "../app.styles";
 
 const LoginForm = () => {
   const [formFields, setFromFields] = useState({
@@ -36,7 +37,7 @@ const LoginForm = () => {
 
   return (
     <div>
-      <h1>Sign In</h1>
+      <Title>Sign In</Title>
       <form onSubmit={handleSubmit}>
         <div>
           <input

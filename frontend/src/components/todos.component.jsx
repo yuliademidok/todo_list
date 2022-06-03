@@ -48,7 +48,7 @@ const Todos = ({ status }) => {
         </Fragment>
       ) : (
         <Fragment>
-          <div>All todos are completed!</div>
+          <Title>All todos are completed!</Title>
           <AddTodoButton />
         </Fragment>
       )}

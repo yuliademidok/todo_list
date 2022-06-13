@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 
 import { deleteTodo } from "../utils/todos.utils";
+import Button from "./button.component";
 
-const DeleteTodoItem = ({ todoId }) => {
+const DeleteTodoItem = ({ todoId, accessToken }) => {
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem("accessToken");
 
-  const handleSubmit = async (event) => {
+  const handleDelete = async (event) => {
     event.preventDefault();
     try {
       await deleteTodo(todoId, accessToken);
@@ -17,9 +17,9 @@ const DeleteTodoItem = ({ todoId }) => {
   };
 
   return (
-    <button type="button" onClick={handleSubmit}>
+    <Button buttonType="delete" type="button" onClick={handleDelete}>
       Delete todo
-    </button>
+    </Button>
   );
 };
 

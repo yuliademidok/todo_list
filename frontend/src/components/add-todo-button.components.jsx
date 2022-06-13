@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
+import Button from "./button.component";
+
 const AddTodoButton = () => {
   const navigate = useNavigate();
 
@@ -7,7 +9,7 @@ const AddTodoButton = () => {
     navigate("/new-todo");
   };
 
-  return <button onClick={addTodoHandler}>Add todo</button>;
+  return <Button buttonType="addTodo" onClick={addTodoHandler}>Add todo</Button>;
 };
 
 export default AddTodoButton;

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 
 import { createUser } from "../utils/users.utils";
+import Button from "./button.component";
 import { Title } from "../app.styles";
 
 const defaultFormFields = {
@@ -81,7 +82,7 @@ const SignUpForm = () => {
             placeholder="Password"
           />
         </div>
-        <button type="submit">Creare Account</button>
+        <Button type="submit">Creare Account</Button>
       </form>
     </div>
   );

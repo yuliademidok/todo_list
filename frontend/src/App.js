@@ -5,7 +5,7 @@ import Login from "./pages/login.page";
 import SignUp from "./pages/sign-up.page";
 import Home from "./pages/home.page";
 import CompletedTodos from "./pages/completed-todos.page";
-import AllTodos from "./pages/all-tods.component";
+import AllTodos from "./pages/all-todos.page";
 import AddTodo from "./pages/add-todo.page";
 import Todo from "./pages/todo.page";
 

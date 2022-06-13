@@ -1,11 +1,12 @@
 import axios from "axios";
 
 const API_URL = "/api/todos/";
+const API_COMPLETE_URL = "/api/todos/complete/";
 
 const headers = (accessToken) => ({
   headers: {
     Authorization: `Bearer ${accessToken}`,
-  },
+  }
 });
 
 export const getTodos = (accessToken, status, callback) => {
@@ -73,6 +74,14 @@ export const editTodo = async (todo, todoId, accessToken) => {
 export const deleteTodo = async (todoId, accessToken) => {
   return axios
     .delete(API_URL + todoId + "/", headers(accessToken))
+    .then((response) => {
+      return response.data;
+    });
+};
+
+export const completeTodo = async (todoId, accessToken) => {
+  return axios
+    .patch(API_COMPLETE_URL + todoId + "/", {}, headers(accessToken))
     .then((response) => {
       return response.data;
     });

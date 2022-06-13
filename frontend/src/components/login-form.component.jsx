@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 
 import { login } from "../utils/users.utils";
 import { UserContext } from "../context/user.context";
+import Button from "./button.component";
 import { Title } from "../app.styles";
 
 const LoginForm = () => {
@@ -58,7 +59,7 @@ const LoginForm = () => {
             value={password}
           />
         </div>
-        <button type="submit">Login</button>
+        <Button type="submit">Login</Button>
       </form>
     </div>
   );

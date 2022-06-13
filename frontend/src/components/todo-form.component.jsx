@@ -4,8 +4,10 @@ import { useNavigate } from "react-router-dom";
 
 import { getTodo, editTodo } from "../utils/todos.utils";
 import DeleteTodoItem from "./delete-todo-item.component";
+import CompleteTodo from "./complete-todo.component";
 import Option from "./option-drop-down.component";
 import SelectBox from "./select-box.component";
+import Button from "./button.component";
 import {
   AddTodoContainer,
   TodoItemForm,
@@ -100,8 +102,11 @@ const TodoForm = () => {
             <Option value="1" description="Hight" />
           </SelectBox>
 
-          <button type="submit">Save changes</button>
-          <DeleteTodoItem todoId={todoId} />
+          <Button type="submit">Save changes</Button>
+          {!formFields.completed_at && (
+            <CompleteTodo todoId={todoId} accessToken={accessToken} />
+          )}
+          <DeleteTodoItem todoId={todoId} accessToken={accessToken} />
         </TodoItemForm>
       </AddTodoContainer>
     </Fragment>

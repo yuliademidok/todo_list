@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { addTodo } from "../utils/todos.utils";
 import Option from "./option-drop-down.component";
 import SelectBox from "./select-box.component";
+import Button from "./button.component";
 import {
   AddTodoContainer,
   TodoItemForm,
@@ -90,7 +91,7 @@ const AddTodoItem = () => {
             <Option value="1" description="Hight" />
           </SelectBox>
 
-          <button type="submit">Add todo</button>
+          <Button type="submit">Add todo</Button>
         </TodoItemForm>
       </AddTodoContainer>
     </Fragment>

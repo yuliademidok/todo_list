@@ -18,7 +18,7 @@ const CompleteTodo = ({ todoId, accessToken }) => {
 
   return (
     <Button type="submit" onClick={handleComplete}>
-      Complete todo
+      Complete
     </Button>
   );
 };

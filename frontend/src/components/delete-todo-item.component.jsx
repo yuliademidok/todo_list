@@ -1,15 +1,19 @@
 import { useNavigate } from "react-router-dom";
 
-import { deleteTodo } from "../utils/todos.utils";
+import { deleteTodo, deleteSubtask } from "../utils/todos.utils";
 import Button from "./button.component";
 
-const DeleteTodoItem = ({ todoId, accessToken }) => {
+const DeleteTodoItem = ({ todoId, accessToken, isSubtask }) => {
   const navigate = useNavigate();
 
   const handleDelete = async (event) => {
     event.preventDefault();
     try {
-      await deleteTodo(todoId, accessToken);
+      if (isSubtask) {
+        await deleteSubtask(todoId, accessToken);
+      } else {
+        await deleteTodo(todoId, accessToken);
+      }
       navigate("/current-todos");
     } catch (error) {
       console.log("Error occured when deleting todo:", error);
@@ -18,7 +22,7 @@ const DeleteTodoItem = ({ todoId, accessToken }) => {
 
   return (
     <Button buttonType="delete" type="button" onClick={handleDelete}>
-      Delete todo
+      {isSubtask ? "Delete subtask" : "Delete todo"}
     </Button>
   );
 };

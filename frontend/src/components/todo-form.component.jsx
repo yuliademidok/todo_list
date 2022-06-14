@@ -1,8 +1,15 @@
-import { useEffect, Fragment, useState } from "react";
+import { useEffect, Fragment, useState, useContext } from "react";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 
-import { getTodo, editTodo } from "../utils/todos.utils";
+import {
+  getTodo,
+  editTodo,
+  getSubtask,
+  editSubtask,
+  getTodos,
+} from "../utils/todos.utils";
+import { TodosContext } from "../context/todos.context";
 import DeleteTodoItem from "./delete-todo-item.component";
 import CompleteTodo from "./complete-todo.component";
 import Option from "./option-drop-down.component";
@@ -20,9 +27,10 @@ const defaultFormFields = {
   title: "",
   description: "",
   priority: 2,
+  parent_id: "",
 };
 
-const TodoForm = () => {
+const TodoForm = ({ isSubtask }) => {
   const params = useParams();
   const navigate = useNavigate();
 
@@ -35,7 +43,9 @@ const TodoForm = () => {
     const fetchTodos = (data) => {
       setFromFields(data);
     };
-    getTodo(accessToken, todoId, fetchTodos);
+    if (isSubtask) {
+      getSubtask(accessToken, todoId, fetchTodos);
+    } else getTodo(accessToken, todoId, fetchTodos);
   }, []);
 
   const resetFormFields = () => {
@@ -45,7 +55,7 @@ const TodoForm = () => {
   const handleChange = (event) => {
     let { name, value } = event.target;
 
-    if (name === "priority") {
+    if (name === "priority" || name === "parent_id") {
       value = parseInt(value);
     }
 
@@ -59,7 +69,9 @@ const TodoForm = () => {
     event.preventDefault();
 
     try {
-      await editTodo(formFields, todoId, accessToken);
+      if (isSubtask) {
+        await editSubtask(formFields, todoId, accessToken);
+      } else await editTodo(formFields, todoId, accessToken);
       resetFormFields();
       navigate("/current-todos");
     } catch (error) {
@@ -67,9 +79,19 @@ const TodoForm = () => {
     }
   };
 
+  const { currentTodos, setCurrentTodos } = useContext(TodosContext);
+
+  useEffect(() => {
+    const fetchTodos = (data) => {
+      const { results } = data;
+      setCurrentTodos(results);
+    };
+    getTodos(accessToken, "", fetchTodos);
+  }, []);
+
   return (
     <Fragment>
-      <Title>Edit todo</Title>
+      <Title>{isSubtask ? "Edit subtask" : "Edit todo"}</Title>
       <AddTodoContainer>
         <TodoItemForm onSubmit={handleSubmit}>
           <InputTitle
@@ -102,11 +124,32 @@ const TodoForm = () => {
             <Option value="1" description="Hight" />
           </SelectBox>
 
+          {isSubtask && (
+            <SelectBox
+              onChange={handleChange}
+              value={formFields?.parent_id}
+              label="Parent"
+              name="parent_id"
+            >
+              {currentTodos.map((todo) => (
+                <Option
+                  key={todo.id}
+                  value={todo.id}
+                  description={todo.title}
+                />
+              ))}
+            </SelectBox>
+          )}
+
           <Button type="submit">Save changes</Button>
           {!formFields.completed_at && (
             <CompleteTodo todoId={todoId} accessToken={accessToken} />
           )}
-          <DeleteTodoItem todoId={todoId} accessToken={accessToken} />
+          <DeleteTodoItem
+            todoId={todoId}
+            accessToken={accessToken}
+            isSubtask={isSubtask}
+          />
         </TodoItemForm>
       </AddTodoContainer>
     </Fragment>

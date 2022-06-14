@@ -8,6 +8,7 @@ import CompletedTodos from "./pages/completed-todos.page";
 import AllTodos from "./pages/all-todos.page";
 import AddTodo from "./pages/add-todo.page";
 import Todo from "./pages/todo.page";
+import Subtask from "./pages/subtask.page";
 
 import "./App.css";
 
@@ -22,6 +23,7 @@ function App() {
         <Route path="all-todos" element={<AllTodos />} />
         <Route path="new-todo" element={<AddTodo />} />
         <Route path="todo/:id" element={<Todo />} />
+        <Route path="subtask/:id" element={<Subtask />} />
       </Route>
     </Routes>
   );

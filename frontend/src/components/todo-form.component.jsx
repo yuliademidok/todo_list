@@ -14,6 +14,7 @@ import Option from "./option-drop-down.component";
 import SelectBox from "./select-box.component";
 import SelectParent from "./select-parent.component";
 import Button from "./button.component";
+import AddSubtaskButton from "./add-subtask-button.component";
 import {
   AddTodoContainer,
   TodoItemForm,
@@ -130,6 +131,8 @@ const TodoForm = ({ isSubtask }) => {
             accessToken={accessToken}
             isSubtask={isSubtask}
           />
+
+          {!isSubtask && <AddSubtaskButton parent_id={todoId} />}
         </TodoItemForm>
       </AddTodoContainer>
     </Fragment>

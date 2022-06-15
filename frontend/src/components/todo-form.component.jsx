@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useState, useContext } from "react";
+import { useEffect, Fragment, useState } from "react";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 
@@ -7,13 +7,12 @@ import {
   editTodo,
   getSubtask,
   editSubtask,
-  getTodos,
 } from "../utils/todos.utils";
-import { TodosContext } from "../context/todos.context";
 import DeleteTodoItem from "./delete-todo-item.component";
 import CompleteTodo from "./complete-todo.component";
 import Option from "./option-drop-down.component";
 import SelectBox from "./select-box.component";
+import SelectParent from "./select-parent.component";
 import Button from "./button.component";
 import {
   AddTodoContainer,
@@ -79,16 +78,6 @@ const TodoForm = ({ isSubtask }) => {
     }
   };
 
-  const { currentTodos, setCurrentTodos } = useContext(TodosContext);
-
-  useEffect(() => {
-    const fetchTodos = (data) => {
-      const { results } = data;
-      setCurrentTodos(results);
-    };
-    getTodos(accessToken, "", fetchTodos);
-  }, []);
-
   return (
     <Fragment>
       <Title>{isSubtask ? "Edit subtask" : "Edit todo"}</Title>
@@ -125,20 +114,11 @@ const TodoForm = ({ isSubtask }) => {
           </SelectBox>
 
           {isSubtask && (
-            <SelectBox
-              onChange={handleChange}
-              value={formFields?.parent_id}
-              label="Parent"
-              name="parent_id"
-            >
-              {currentTodos.map((todo) => (
-                <Option
-                  key={todo.id}
-                  value={todo.id}
-                  description={todo.title}
-                />
-              ))}
-            </SelectBox>
+            <SelectParent
+              parent_id={formFields?.parent_id}
+              handleChange={handleChange}
+              accessToken={accessToken}
+            />
           )}
 
           <Button type="submit">Save changes</Button>

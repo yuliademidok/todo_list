@@ -1,9 +1,9 @@
 import { useState, Fragment } from "react";
 
-import { SubtaskItemCart, TodoTitle, TodoDescription } from "../app.styles";
+import { SubtaskItemCart, TodoTitle } from "../app.styles";
 
 const SubtaskForm = ({ subtask }) => {
-  const { id, title, priority, description } = subtask;
+  const { id, title, priority, completed_at } = subtask;
 
   const [hover, setHover] = useState(false);
 
@@ -15,6 +15,7 @@ const SubtaskForm = ({ subtask }) => {
   return (
     <SubtaskItemCart
       value={priority}
+      status={completed_at}
       onMouseOver={() => {
         setHover(true);
       }}

@@ -6,9 +6,10 @@ const darkGreyColor = "#484848";
 const hoverColor = "#fbc531";
 const borderColor = "#dee2e6";
 
-const lowPriorityColor = "#6c757d";
-const mediumPriorityColor = "#4a8268";
-const highPriorityColor = "#d44e5b";
+const lowPriorityColor = "#99a8bb";
+const mediumPriorityColor = "#8FBC8F";
+const highPriorityColor = "#F08080";
+const completedColor = "#6c757d";
 
 const deleteColor = "#d11a2a";
 
@@ -82,10 +83,13 @@ export const TodoTitleBlock = styled.div`
     margin-right: 20px;
   }
 
-  background-color: ${({ value }) =>
+  background-color: ${({ value, status }) =>
+    (status && `${completedColor}`) ||
     (value === 1 && `${highPriorityColor}`) ||
     (value === 2 && `${mediumPriorityColor}`) ||
     (value === 3 && `${lowPriorityColor}`)};
+
+  text-decoration: ${({ status }) => status && `line-through;`};
 
   &:hover {
     opacity: 0.9;

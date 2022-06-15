@@ -9,7 +9,7 @@ import {
 } from "../app.styles";
 
 const TodoItem = ({ todo }) => {
-  const { id, title, description, priority, subtasks } = todo;
+  const { id, title, description, priority, subtasks, completed_at } = todo;
 
   const [isExpanded, setExpanded] = useState(false);
   const [hover, setHover] = useState(false);
@@ -34,6 +34,7 @@ const TodoItem = ({ todo }) => {
     <TodoItemCart>
       <TodoTitleBlock
         value={priority}
+        status={completed_at}
         onMouseOver={() => {
           setHover(true);
         }}
@@ -59,7 +60,7 @@ const TodoItem = ({ todo }) => {
       {viewSubtasks && (
         <Fragment>
           {subtasks.map((subtask) => (
-            <SubtaskItem key={subtask.id} subtask={subtask}/>
+            <SubtaskItem key={subtask.id} subtask={subtask} />
           ))}
         </Fragment>
       )}

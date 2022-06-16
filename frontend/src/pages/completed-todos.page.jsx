@@ -1,11 +1,7 @@
 import Todos from "../components/todos.component";
 
 const CompletedTodos = () => {
-  return (
-    <div>
-      <Todos status="?status=completed" />
-    </div>
-  );
+  return <Todos status="?status=completed" />;
 };
 
 export default CompletedTodos;

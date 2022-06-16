@@ -1,9 +1,9 @@
-import { useState, useContext } from "react";
+import { useState, useContext, Fragment } from "react";
 
 import { login } from "../utils/users.utils";
 import { UserContext } from "../context/user.context";
 import Button from "./button.component";
-import { Title } from "../app.styles";
+import { Title, AuthenticationForm, Input } from "../app.styles";
 
 const LoginForm = () => {
   const [formFields, setFromFields] = useState({
@@ -37,31 +37,27 @@ const LoginForm = () => {
   };
 
   return (
-    <div>
+    <Fragment>
       <Title>Sign In</Title>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            label="Username"
-            required
-            onChange={handleChange}
-            name="username"
-            value={username}
-          />
-        </div>
-        <div>
-          <input
-            label="Password"
-            required
-            type="password"
-            onChange={handleChange}
-            name="password"
-            value={password}
-          />
-        </div>
+      <AuthenticationForm onSubmit={handleSubmit}>
+        <Input
+          label="Username"
+          required
+          onChange={handleChange}
+          name="username"
+          value={username}
+        />
+        <Input
+          label="Password"
+          required
+          type="password"
+          onChange={handleChange}
+          name="password"
+          value={password}
+        />
         <Button type="submit">Login</Button>
-      </form>
-    </div>
+      </AuthenticationForm>
+    </Fragment>
   );
 };
 

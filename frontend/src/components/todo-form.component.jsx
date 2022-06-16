@@ -18,7 +18,7 @@ import AddSubtaskButton from "./add-subtask-button.component";
 import {
   AddTodoContainer,
   TodoItemForm,
-  InputTitle,
+  Input,
   InputDescription,
   Title,
   Subtitle,
@@ -100,7 +100,7 @@ const TodoForm = ({ isSubtask }) => {
       )}
       <AddTodoContainer>
         <TodoItemForm onSubmit={handleSubmit}>
-          <InputTitle
+          <Input
             label="Title"
             required
             onChange={handleChange}

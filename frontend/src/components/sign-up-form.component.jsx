@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { useNavigate } from "react-router";
 
 import { createUser } from "../utils/users.utils";
 import Button from "./button.component";
-import { Title } from "../app.styles";
+import { Title, AuthenticationForm, Input } from "../app.styles";
 
 const defaultFormFields = {
   username: "",
@@ -47,44 +47,38 @@ const SignUpForm = () => {
   };
 
   return (
-    <div>
+    <Fragment>
       <Title>Sign up</Title>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            label="Username"
-            required
-            onChange={handleChange}
-            name="username"
-            value={username}
-            placeholder="Username"
-          />
-        </div>
-        <div>
-          <input
-            label="Email"
-            required
-            type="email"
-            onChange={handleChange}
-            name="email"
-            value={email}
-            placeholder="Email"
-          />
-        </div>
-        <div>
-          <input
-            label="Password"
-            required
-            type="password"
-            onChange={handleChange}
-            name="password"
-            value={password}
-            placeholder="Password"
-          />
-        </div>
+      <AuthenticationForm onSubmit={handleSubmit}>
+        <Input
+          label="Username"
+          required
+          onChange={handleChange}
+          name="username"
+          value={username}
+          placeholder="Username"
+        />
+        <Input
+          label="Email"
+          required
+          type="email"
+          onChange={handleChange}
+          name="email"
+          value={email}
+          placeholder="Email"
+        />
+        <Input
+          label="Password"
+          required
+          type="password"
+          onChange={handleChange}
+          name="password"
+          value={password}
+          placeholder="Password"
+        />
         <Button type="submit">Creare Account</Button>
-      </form>
-    </div>
+      </AuthenticationForm>
+    </Fragment>
   );
 };
 

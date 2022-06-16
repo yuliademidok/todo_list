@@ -9,7 +9,7 @@ import Button from "./button.component";
 import {
   AddTodoContainer,
   TodoItemForm,
-  InputTitle,
+  Input,
   InputDescription,
   Title,
 } from "../app.styles";
@@ -69,7 +69,7 @@ const AddTodoItem = ({ isSubtask }) => {
       <Title>{isSubtask ? "Add subtask" : "Add todo"}</Title>
       <AddTodoContainer>
         <TodoItemForm onSubmit={handleSubmit}>
-          <InputTitle
+          <Input
             label="Title"
             required
             onChange={handleChange}

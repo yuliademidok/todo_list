@@ -116,7 +116,7 @@ export const SubtaskItemCart = styled(TodoTitleBlock)`
   width: 760px;
 `;
 
-export const InputTitle = styled.input`
+export const Input = styled.input`
   width: 100%;
   margin-bottom: 20px;
   height: 50px;
@@ -179,4 +179,14 @@ export const SmallButton = styled(BaseButton)`
   display: inline;
   line-height: 20px;
   min-width: 40px;
+`;
+
+export const AuthenticationForm = styled(TodoItemCart)`
+  width: 600px;
+
+  > * {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+  }
 `;

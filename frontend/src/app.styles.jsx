@@ -46,7 +46,7 @@ export const Title = styled.h1`
 `;
 
 export const TodoItemsContainer = styled.div`
-  width: 840px;
+  width: 980px;
   border-radius: 0.375rem;
   border: solid ${borderColor};
   margin: 10px auto;
@@ -55,7 +55,7 @@ export const TodoItemsContainer = styled.div`
 export const AddTodoContainer = styled(TodoItemsContainer)``;
 
 export const TodoItemCart = styled.form`
-  width: 800px;
+  width: 940px;
   border-radius: 0.375rem;
   border: solid ${borderColor};
   margin: 20px auto;
@@ -69,6 +69,8 @@ export const TodoItemForm = styled(TodoItemCart)`
 
 export const TodoTitle = styled(Link)`
   color: white;
+
+  text-decoration: ${({ status }) => status && `line-through;`};
 `;
 
 export const TodoTitleBlock = styled.div`
@@ -88,8 +90,6 @@ export const TodoTitleBlock = styled.div`
     (value === 1 && `${highPriorityColor}`) ||
     (value === 2 && `${mediumPriorityColor}`) ||
     (value === 3 && `${lowPriorityColor}`)};
-
-  text-decoration: ${({ status }) => status && `line-through;`};
 
   &:hover {
     opacity: 0.9;
@@ -166,4 +166,11 @@ export const AddTodoButton = styled(BaseButton)`
   font-size: 18px;
   display: inline;
   line-height: 20px;
+`;
+
+export const SmallButton = styled(BaseButton)`
+  font-size: 10px;
+  display: inline;
+  line-height: 20px;
+  min-width: 40px;
 `;

@@ -1,10 +1,16 @@
-import { BaseButton, DeleteButton, AddTodoButton } from "../app.styles";
+import {
+  BaseButton,
+  DeleteButton,
+  AddTodoButton,
+  SmallButton,
+} from "../app.styles";
 
 const getButton = (buttonType = "base") =>
   ({
-    "base": BaseButton,
-    "addTodo": AddTodoButton,
-    "delete": DeleteButton,
+    base: BaseButton,
+    addTodo: AddTodoButton,
+    delete: DeleteButton,
+    small: SmallButton,
   }[buttonType]);
 
 const Button = ({ children, buttonType, ...otherProps }) => {

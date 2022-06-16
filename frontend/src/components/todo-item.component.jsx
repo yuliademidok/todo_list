@@ -1,6 +1,8 @@
 import { useState, Fragment } from "react";
 
 import SubtaskItem from "./subtask-item.component";
+import AddSubtaskButton from "./add-subtask-button.component";
+import Button from "./button.component";
 import {
   TodoItemCart,
   TodoTitle,
@@ -42,15 +44,24 @@ const TodoItem = ({ todo }) => {
           setHover(false);
         }}
       >
-        <TodoTitle to={`/todo/${id}/`}>{title}</TodoTitle>
+        <TodoTitle status={completed_at} to={`/todo/${id}/`}>
+          {title}
+        </TodoTitle>
 
         {hover && (
           <Fragment>
-            <button onClick={handleExpanded}>Quick view</button>
-            <button onClick={handleOpenTodoItem}>Edit</button>
+            <Button buttonType="small" onClick={handleExpanded}>
+              Quick view
+            </Button>
+            <Button buttonType="small" onClick={handleOpenTodoItem}>
+              Edit
+            </Button>
             {subtasks.length > 0 && (
-              <button onClick={handleViewSubtasks}>View subtasks</button>
+              <Button buttonType="small" onClick={handleViewSubtasks}>
+                View subtasks
+              </Button>
             )}
+            <AddSubtaskButton buttonType="small" />
           </Fragment>
         )}
       </TodoTitleBlock>

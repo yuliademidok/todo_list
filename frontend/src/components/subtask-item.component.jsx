@@ -1,5 +1,6 @@
 import { useState, Fragment } from "react";
 
+import Button from "./button.component";
 import { SubtaskItemCart, TodoTitle } from "../app.styles";
 
 const SubtaskForm = ({ subtask }) => {
@@ -23,11 +24,15 @@ const SubtaskForm = ({ subtask }) => {
         setHover(false);
       }}
     >
-      <TodoTitle to={`/subtask/${id}/`}>{title}</TodoTitle>
+      <TodoTitle status={completed_at} to={`/subtask/${id}/`}>
+        {title}
+      </TodoTitle>
 
       {hover && (
         <Fragment>
-          <button onClick={handleOpenSubtaskItem}>Edit</button>
+          <Button buttonType="small" onClick={handleOpenSubtaskItem}>
+            Edit
+          </Button>
         </Fragment>
       )}
     </SubtaskItemCart>

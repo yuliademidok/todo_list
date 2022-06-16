@@ -21,6 +21,7 @@ import {
   InputTitle,
   InputDescription,
   Title,
+  Subtitle,
 } from "../app.styles";
 
 const defaultFormFields = {
@@ -79,9 +80,24 @@ const TodoForm = ({ isSubtask }) => {
     }
   };
 
+  const date = new Date(formFields.completed_at);
+  const completed_short_date =
+    date.getHours() +
+    ":" +
+    date.getMinutes() +
+    " " +
+    date.getDate() +
+    "." +
+    (date.getMonth() + 1) +
+    "." +
+    date.getFullYear();
+
   return (
     <Fragment>
       <Title>{isSubtask ? "Edit subtask" : "Edit todo"}</Title>
+      {formFields.completed_at && (
+        <Subtitle>Completed {completed_short_date}</Subtitle>
+      )}
       <AddTodoContainer>
         <TodoItemForm onSubmit={handleSubmit}>
           <InputTitle

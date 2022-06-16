@@ -45,6 +45,12 @@ export const Title = styled.h1`
   text-align: center;
 `;
 
+export const Subtitle = styled.h2`
+  text-align: center;
+  font-size: 16px;
+`;
+
+
 export const TodoItemsContainer = styled.div`
   width: 980px;
   border-radius: 0.375rem;

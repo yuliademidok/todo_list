@@ -1,7 +1,7 @@
 import Todos from "../components/todos.component";
 
 const Home = () => {
-  return <Todos status="?status=current" />;
+  return <Todos status="current" />;
 };
 
 export default Home;

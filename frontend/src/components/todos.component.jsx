@@ -1,10 +1,11 @@
-import { useEffect, useContext, Fragment } from "react";
+import { useEffect, useContext, Fragment, useState } from "react";
 
 import { getTodos } from "../utils/todos.utils";
 
 import { TodosContext } from "../context/todos.context";
 import TodoItem from "./todo-item.component";
 import AddTodoButton from "./add-todo-button.components";
+import Pagination from "./pagination.component.jsx";
 import { TodoItemsContainer, Title } from "../app.styles";
 
 const Todos = ({ status }) => {
@@ -16,6 +17,8 @@ const Todos = ({ status }) => {
   } = useContext(TodosContext);
   const accessToken = localStorage.getItem("accessToken");
 
+  const itemLimit = 10;
+
   useEffect(() => {
     const fetchTodos = (data) => {
       const { count, results } = data;
@@ -24,6 +27,16 @@ const Todos = ({ status }) => {
     };
     getTodos(accessToken, status, fetchTodos);
   }, []);
+
+
+  const handlePagination = async (value) => {
+    const fetchTodos = (data) => {
+      const { results } = data;
+      setCurrentTodos(results);
+    };
+    const offset = value.selected * itemLimit;
+    getTodos(accessToken, status, fetchTodos, offset);
+  };
 
   let todoStatus = "";
   if (status.includes("completed")) {
@@ -45,6 +58,12 @@ const Todos = ({ status }) => {
               <TodoItem key={todo.id} todo={todo} />
             ))}
           </TodoItemsContainer>
+
+          <Pagination
+            currentTodosCount={currentTodosCount}
+            handlePagination={handlePagination}
+            itemLimit={itemLimit}
+          />
         </Fragment>
       ) : (
         <Fragment>

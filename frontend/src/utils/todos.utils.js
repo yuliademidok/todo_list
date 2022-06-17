@@ -10,9 +10,12 @@ const headers = (accessToken) => ({
   },
 });
 
-export const getTodos = (accessToken, status, callback) => {
+export const getTodos = (accessToken, status="", callback, offset=0) => {
+  if (status) {
+    status = `&status=${status}`
+  }
   return axios
-    .get(API_URL + status, headers(accessToken))
+    .get(API_URL + `?limit=10&offset=${offset}` + status, headers(accessToken))
     .then((response) => {
       return response.data;
     })

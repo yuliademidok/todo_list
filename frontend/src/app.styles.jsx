@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import ReactPaginate from "react-paginate";
 
 import styled from "styled-components";
 
@@ -49,7 +50,6 @@ export const Subtitle = styled.h2`
   text-align: center;
   font-size: 16px;
 `;
-
 
 export const TodoItemsContainer = styled.div`
   width: 980px;
@@ -188,5 +188,37 @@ export const AuthenticationForm = styled(TodoItemCart)`
     display: flex;
     justify-content: center;
     margin: 20px;
+  }
+`;
+
+export const PaginationBlock = styled.div`
+  & > .pagination-container {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+
+    & > li {
+      float: left;
+
+      & > a {
+        float: left;
+        padding: 8px 16px;
+        margin: 0 4px;
+        cursor: pointer;
+        background-color: ${darkGreyColor};
+        opacity: 0.7;
+        border-radius: 0.375rem;
+
+        &:hover {
+          color: ${hoverColor};
+        }
+      }
+    }
+
+    & > li.selected {
+      & > a {
+        opacity: 1;
+      }
+    }
   }
 `;

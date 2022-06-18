@@ -1,4 +1,4 @@
-import { useEffect, useContext, Fragment, useState } from "react";
+import { useEffect, useContext, Fragment } from "react";
 
 import { getTodos } from "../utils/todos.utils";
 
@@ -28,7 +28,6 @@ const Todos = ({ status }) => {
     getTodos(accessToken, status, fetchTodos);
   }, []);
 
-
   const handlePagination = async (value) => {
     const fetchTodos = (data) => {
       const { results } = data;
@@ -38,19 +37,12 @@ const Todos = ({ status }) => {
     getTodos(accessToken, status, fetchTodos, offset);
   };
 
-  let todoStatus = "";
-  if (status.includes("completed")) {
-    todoStatus = "completed";
-  } else if (status.includes("current")) {
-    todoStatus = "uncompleted";
-  }
-
   return (
     <Fragment>
       {currentTodosCount ? (
         <Fragment>
           <Title>
-            You have {currentTodosCount} {todoStatus} todos
+            You have {currentTodosCount} {status} todos
           </Title>
 
           <TodoItemsContainer>

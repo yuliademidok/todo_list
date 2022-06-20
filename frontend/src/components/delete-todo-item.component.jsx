@@ -1,10 +1,14 @@
 import { useNavigate } from "react-router-dom";
 
+import { toast } from "react-toastify";
+
 import { deleteTodo, deleteSubtask } from "../utils/todos.utils";
 import Button from "./button.component";
 
 const DeleteTodoItem = ({ todoId, accessToken, isSubtask }) => {
   const navigate = useNavigate();
+
+  let itemType = isSubtask ? "subtask" : "todo";
 
   const handleDelete = async (event) => {
     event.preventDefault();
@@ -14,15 +18,16 @@ const DeleteTodoItem = ({ todoId, accessToken, isSubtask }) => {
       } else {
         await deleteTodo(todoId, accessToken);
       }
+      toast.success(`${itemType} is deleted`);
       navigate("/current-todos");
     } catch (error) {
-      console.log("Error occured when deleting todo:", error);
+      toast.error(`Error occured when deleting ${itemType}`);
     }
   };
 
   return (
     <Button buttonType="delete" type="button" onClick={handleDelete}>
-      {isSubtask ? "Delete subtask" : "Delete todo"}
+      Delete {itemType}
     </Button>
   );
 };

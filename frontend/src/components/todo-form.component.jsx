@@ -2,6 +2,8 @@ import { useEffect, Fragment, useState } from "react";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 
+import { toast } from "react-toastify";
+
 import {
   getTodo,
   editTodo,
@@ -40,6 +42,8 @@ const TodoForm = ({ isSubtask }) => {
 
   const [formFields, setFromFields] = useState(defaultFormFields);
 
+  let itemType = isSubtask ? "subtask" : "todo";
+
   useEffect(() => {
     const fetchTodos = (data) => {
       setFromFields(data);
@@ -74,9 +78,10 @@ const TodoForm = ({ isSubtask }) => {
         await editSubtask(formFields, todoId, accessToken);
       } else await editTodo(formFields, todoId, accessToken);
       resetFormFields();
+      toast.success(`${itemType} is updated`)
       navigate("/current-todos");
     } catch (error) {
-      console.log("Error occured when adding todo:", error);
+      toast.error(`Error occured when updating ${itemType}`)
     }
   };
 
@@ -94,7 +99,7 @@ const TodoForm = ({ isSubtask }) => {
 
   return (
     <Fragment>
-      <Title>{isSubtask ? "Edit subtask" : "Edit todo"}</Title>
+      <Title>Edit {itemType}</Title>
       {formFields.completed_at && (
         <Subtitle>Completed {completed_short_date}</Subtitle>
       )}
@@ -140,7 +145,7 @@ const TodoForm = ({ isSubtask }) => {
 
           <Button type="submit">Save changes</Button>
           {!formFields.completed_at && (
-            <CompleteTodo todoId={todoId} accessToken={accessToken} />
+            <CompleteTodo todoId={todoId} accessToken={accessToken} isSubtask={isSubtask} />
           )}
           <DeleteTodoItem
             todoId={todoId}

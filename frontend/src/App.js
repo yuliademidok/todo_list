@@ -10,6 +10,7 @@ import AddTodo from "./pages/add-todo.page";
 import AddSubtask from "./pages/add-subtask.page";
 import Todo from "./pages/todo.page";
 import Subtask from "./pages/subtask.page";
+import ToastMessage from "./components/toast.component";
 
 import "./App.css";
 
@@ -17,15 +18,17 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigation />}>
-        <Route index element={<Login />} />
-        <Route path="sign-up" element={<SignUp />} />
-        <Route path="current-todos" element={<Home />} />
-        <Route path="completed-todos" element={<CompletedTodos />} />
-        <Route path="all-todos" element={<AllTodos />} />
-        <Route path="new-todo" element={<AddTodo />} />
-        <Route path="todo/:id" element={<Todo />} />
-        <Route path="subtask/:id" element={<Subtask />} />
-        <Route path=":parent_id/new-subtask" element={<AddSubtask />} />
+        <Route path="/" element={<ToastMessage />}>
+          <Route index element={<Login />} />
+          <Route path="sign-up" element={<SignUp />} />
+          <Route path="current-todos" element={<Home />} />
+          <Route path="completed-todos" element={<CompletedTodos />} />
+          <Route path="all-todos" element={<AllTodos />} />
+          <Route path="new-todo" element={<AddTodo />} />
+          <Route path="todo/:id" element={<Todo />} />
+          <Route path="subtask/:id" element={<Subtask />} />
+          <Route path=":parent_id/new-subtask" element={<AddSubtask />} />
+        </Route>
       </Route>
     </Routes>
   );

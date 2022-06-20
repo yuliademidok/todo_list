@@ -2,6 +2,8 @@ import { useState, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router";
 
+import { toast } from "react-toastify";
+
 import { addTodo, addSubtask } from "../utils/todos.utils";
 import Option from "./option-drop-down.component";
 import SelectBox from "./select-box.component";
@@ -31,6 +33,8 @@ const AddTodoItem = ({ isSubtask }) => {
   const params = useParams();
   let parent_id = params.parent_id;
 
+  let itemType = isSubtask ? "subtask" : "todo";
+
   const resetFormFields = () => {
     setFromFields(defaultFormFields);
   };
@@ -58,15 +62,16 @@ const AddTodoItem = ({ isSubtask }) => {
         await addTodo(formFields, accessToken);
       }
       resetFormFields();
+      toast.success(`${itemType} is added`);
       navigate("/current-todos");
     } catch (error) {
-      console.log("Error occured when adding todo:", error);
+      toast.error(`Error occured when adding ${itemType}`);
     }
   };
 
   return (
     <Fragment>
-      <Title>{isSubtask ? "Add subtask" : "Add todo"}</Title>
+      <Title>Add {itemType}</Title>
       <AddTodoContainer>
         <TodoItemForm onSubmit={handleSubmit}>
           <Input
@@ -99,9 +104,7 @@ const AddTodoItem = ({ isSubtask }) => {
             <Option value="1" description="Hight" />
           </SelectBox>
 
-          <Button type="submit">
-            {isSubtask ? "Add subtask" : "Add todo"}
-          </Button>
+          <Button type="submit">Add {itemType}</Button>
         </TodoItemForm>
       </AddTodoContainer>
     </Fragment>

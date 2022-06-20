@@ -1,6 +1,8 @@
 import { useState, Fragment } from "react";
 import { useNavigate } from "react-router";
 
+import { toast } from "react-toastify";
+
 import { createUser } from "../utils/users.utils";
 import Button from "./button.component";
 import { Title, AuthenticationForm, Input } from "../app.styles";
@@ -35,13 +37,16 @@ const SignUpForm = () => {
     try {
       await createUser(formFields);
       resetFormFields();
+      toast.success("A user is successfully created");
       navigate("/");
     } catch (error) {
       console.log("Error occure when sign up:", error);
       if (error.response.data.username) {
-        alert("A user with this username is already created");
+        toast.error("A user with this username is already created");
       } else if (error.response.data.email) {
-        alert("A user with this email is already created");
+        toast.error("A user with this email is already created");
+      } else {
+        console.log(error);
       }
     }
   };

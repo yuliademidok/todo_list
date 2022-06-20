@@ -61,7 +61,7 @@ const TodoItem = ({ todo }) => {
                 View subtasks
               </Button>
             )}
-            <AddSubtaskButton buttonType="small" />
+            <AddSubtaskButton buttonType="small" parent_id={todo.id} />
           </Fragment>
         )}
       </TodoTitleBlock>

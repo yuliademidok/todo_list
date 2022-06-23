@@ -6,9 +6,15 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import UpdateModelMixin, RetrieveModelMixin
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from accounts_app.api.permissions import IsCreationOrIsAuthenticated
-from accounts_app.api.serializers.accounts import UserSerializer, PasswordSerializer, UpdateUserSerializer
+from accounts_app.api.serializers.accounts import (
+    UserSerializer,
+    PasswordSerializer,
+    UpdateUserSerializer,
+    CustomTokenObtainPairSerializer,
+)
 
 
 @extend_schema(
@@ -24,6 +30,10 @@ def signup(request):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=201)
+
+
+class Login(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
 
 
 class UserViewSet(GenericViewSet, UpdateModelMixin, RetrieveModelMixin):

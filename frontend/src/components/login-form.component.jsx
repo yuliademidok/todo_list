@@ -1,7 +1,7 @@
-import { useState, useContext, Fragment } from "react";
+import { useState, Fragment } from "react";
+import { useDispatch } from "react-redux";
 
-import { login } from "../utils/users.utils";
-import { UserContext } from "../context/user.context";
+import { signInStart } from "../store/user/user.action";
 import Button from "./button.component";
 import { Title, AuthenticationForm, Input } from "../app.styles";
 
@@ -12,7 +12,7 @@ const LoginForm = () => {
   });
   const { username, password } = formFields;
 
-  const { setCurrentUser } = useContext(UserContext);
+  const dispatch = useDispatch();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -24,16 +24,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    try {
-      const currentUser = await login(username, password);
-      setCurrentUser(currentUser);
-    } catch (error) {
-      console.log("Error occure when login:", error);
-      if (error.response.status || error.response.status === 401) {
-        alert("Incorrect username or password");
-      }
-    }
+    dispatch(signInStart(username, password));
   };
 
   return (

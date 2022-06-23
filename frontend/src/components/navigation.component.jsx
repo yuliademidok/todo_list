@@ -1,17 +1,20 @@
-import { useContext, Fragment } from "react";
+import { Fragment } from "react";
 import { Link, Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-import { logout } from "../utils/users.utils";
-import { UserContext } from "../context/user.context";
+import { selectCurrentUser } from "../store/user/user.selector";
+import { signOutStart } from "../store/user/user.action";
 import AddTodoButton from "./add-todo-button.components";
 import { NavBar, NavBarItems } from "../app.styles";
 
 const Navigation = () => {
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const currentUser = useSelector(selectCurrentUser);
+
+  const dispatch = useDispatch();
 
   const signOutHandler = async () => {
-    await logout();
-    setCurrentUser(null);
+    dispatch(signOutStart());
   };
 
   return (

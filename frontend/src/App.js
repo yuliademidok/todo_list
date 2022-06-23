@@ -1,4 +1,6 @@
 import { Routes, Route } from "react-router";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 import Navigation from "./components/navigation.component";
 import Login from "./pages/login.page";
@@ -11,10 +13,17 @@ import AddSubtask from "./pages/add-subtask.page";
 import Todo from "./pages/todo.page";
 import Subtask from "./pages/subtask.page";
 import ToastMessage from "./components/toast.component";
+import { checkUserSession } from "./store/user/user.action";
 
 import "./App.css";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(checkUserSession());
+  }, []);
+
   return (
     <Routes>
       <Route path="/" element={<Navigation />}>

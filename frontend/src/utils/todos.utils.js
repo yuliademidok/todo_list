@@ -23,27 +23,15 @@ export const getTodos = (accessToken, status = "", offset = 0) => {
       .then((response) => {
         return response.data;
       })
-      // .then((data) => {
-      //   callback(data);
-      // })
-      // .catch((error) => {
-      //   console.log(error);
-      // })
   );
 };
 
-export const getTodo = async (accessToken, todoId, callback) => {
+export const getTodo = async (todoId, accessToken) => {
   return axios
     .get(API_URL + todoId + "/", headers(accessToken))
     .then((response) => {
       return response.data;
     })
-    .then((data) => {
-      callback(data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
 };
 
 export const addTodo = async (todo, accessToken) => {
@@ -96,18 +84,12 @@ export const completeTodo = async (todoId, accessToken) => {
     });
 };
 
-export const getSubtask = async (accessToken, subtaskId, callback) => {
+export const getSubtask = async (subtaskId, accessToken) => {
   return axios
     .get(API_SUBTASKS_URL + subtaskId + "/", headers(accessToken))
     .then((response) => {
       return response.data;
     })
-    .then((data) => {
-      callback(data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
 };
 
 export const deleteSubtask = async (subtaskId, accessToken) => {

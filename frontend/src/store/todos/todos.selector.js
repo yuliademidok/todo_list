@@ -16,3 +16,13 @@ export const selectTodosIsLoading = createSelector(
   [selectTodosRecucer],
   (todos) => todos.isLoading
 );
+
+export const selectTodo = createSelector(
+  [selectTodosRecucer],
+  (todos) => todos.todo
+);
+
+export const selectTodoIsLoading = createSelector(
+  [selectTodosRecucer],
+  (todos) => todos.isLoading
+);

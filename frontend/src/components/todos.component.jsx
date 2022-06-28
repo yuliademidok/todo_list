@@ -1,66 +1,67 @@
-import { useEffect, useContext, Fragment } from "react";
+import { useEffect, Fragment } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { getTodos } from "../utils/todos.utils";
-
-import { TodosContext } from "../context/todos.context";
+import {
+  selectTodosItems,
+  selectTodosCount,
+  selectTodosIsLoading,
+} from "../store/todos/todos.selector";
+import { fetchTodosStart } from "../store/todos/todos.action";
 import TodoItem from "./todo-item.component";
 import AddTodoButton from "./add-todo-button.components";
 import Pagination from "./pagination.component.jsx";
+import Spinner from "./spinner.component";
 import { TodoItemsContainer, Title } from "../app.styles";
 
 const Todos = ({ status }) => {
-  const {
-    currentTodos,
-    setCurrentTodos,
-    setCurrentTodosCount,
-    currentTodosCount,
-  } = useContext(TodosContext);
-  const accessToken = localStorage.getItem("accessToken");
+  const dispatch = useDispatch();
+
+  const todosItems = useSelector(selectTodosItems);
+  const todosCount = useSelector(selectTodosCount);
+  const isLoading = useSelector(selectTodosIsLoading);
 
   const itemLimit = 10;
+  const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
-    const fetchTodos = (data) => {
-      const { count, results } = data;
-      setCurrentTodosCount(count);
-      setCurrentTodos(results);
-    };
-    getTodos(accessToken, status, fetchTodos);
-  }, []);
+    dispatch(fetchTodosStart(accessToken, status));
+  }, [accessToken, dispatch, status]);
 
   const handlePagination = async (value) => {
-    const fetchTodos = (data) => {
-      const { results } = data;
-      setCurrentTodos(results);
-    };
     const offset = value.selected * itemLimit;
-    getTodos(accessToken, status, fetchTodos, offset);
+    dispatch(fetchTodosStart(accessToken, status, offset));
   };
 
   return (
     <Fragment>
-      {currentTodosCount ? (
-        <Fragment>
-          <Title>
-            You have {currentTodosCount} {status} todos
-          </Title>
-
-          <TodoItemsContainer>
-            {currentTodos.map((todo) => (
-              <TodoItem key={todo.id} todo={todo} />
-            ))}
-          </TodoItemsContainer>
-
-          <Pagination
-            currentTodosCount={currentTodosCount}
-            handlePagination={handlePagination}
-            itemLimit={itemLimit}
-          />
-        </Fragment>
+      {isLoading ? (
+        <Spinner />
       ) : (
         <Fragment>
-          <Title>All todos are completed!</Title>
-          <AddTodoButton />
+          {todosCount ? (
+            <Fragment>
+              <Title>
+                You have {todosCount} {status} todos
+              </Title>
+
+              <TodoItemsContainer>
+                {todosItems.map((todo) => (
+                  <TodoItem key={todo.id} todo={todo} />
+                ))}
+              </TodoItemsContainer>
+
+              <Pagination
+                todosCount={todosCount}
+                handlePagination={handlePagination}
+                itemLimit={itemLimit}
+              />
+            </Fragment>
+          ) : (
+            <Fragment>
+              <Title>All todos are completed!</Title>
+              <AddTodoButton />
+            </Fragment>
+          )}
         </Fragment>
       )}
     </Fragment>

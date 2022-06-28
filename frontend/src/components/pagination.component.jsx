@@ -2,8 +2,8 @@ import ReactPaginate from "react-paginate";
 
 import { PaginationBlock } from "../app.styles";
 
-const Pagination = ({ currentTodosCount, handlePagination, itemLimit }) => {
-  const pageCount = Math.ceil(currentTodosCount / itemLimit);
+const Pagination = ({ todosCount, handlePagination, itemLimit }) => {
+  const pageCount = Math.ceil(todosCount / itemLimit);
 
   return (
     <PaginationBlock>

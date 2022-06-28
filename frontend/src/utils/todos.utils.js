@@ -10,21 +10,26 @@ const headers = (accessToken) => ({
   },
 });
 
-export const getTodos = (accessToken, status="", callback, offset=0) => {
+export const getTodos = (accessToken, status = "", offset = 0) => {
   if (status) {
-    status = `&status=${status}`
+    status = `&status=${status}`;
   }
-  return axios
-    .get(API_URL + `?limit=10&offset=${offset}` + status, headers(accessToken))
-    .then((response) => {
-      return response.data;
-    })
-    .then((data) => {
-      callback(data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  return (
+    axios
+      .get(
+        API_URL + `?limit=10&offset=${offset}` + status,
+        headers(accessToken)
+      )
+      .then((response) => {
+        return response.data;
+      })
+      // .then((data) => {
+      //   callback(data);
+      // })
+      // .catch((error) => {
+      //   console.log(error);
+      // })
+  );
 };
 
 export const getTodo = async (accessToken, todoId, callback) => {

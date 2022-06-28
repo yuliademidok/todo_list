@@ -4,13 +4,6 @@ import { USER_ACTION_TYPES } from "./user.types";
 export const setCurrentUser = (user) =>
   createAction(USER_ACTION_TYPES.SET_CURRENT_USER, user);
 
-/*
-  SIGN_OUT_START: 'user/SIGN_OUT_START',
-  SIGN_OUT_SUCCESS: 'user/SIGN_OUT_SUCCESS',
-  SIGN_OUT_FAILED: 'user/SIGN_OUT_FAILED',
-};
-  */
-
 export const checkUserSession = () =>
   createAction(USER_ACTION_TYPES.CHECK_USER_SESSION);
 

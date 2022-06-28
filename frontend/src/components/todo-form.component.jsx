@@ -139,7 +139,6 @@ const TodoForm = ({ isSubtask }) => {
             <SelectParent
               parent_id={formFields?.parent_id}
               handleChange={handleChange}
-              accessToken={accessToken}
             />
           )}
 

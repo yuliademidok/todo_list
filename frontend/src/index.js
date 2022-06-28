@@ -6,16 +6,12 @@ import { Provider } from "react-redux";
 import App from "./App";
 import { store } from "./store/store";
 
-import { TodosProvider } from "./context/todos.context";
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <TodosProvider>
-          <App />
-        </TodosProvider>
+        <App />
       </BrowserRouter>
     </Provider>
   </React.StrictMode>

@@ -26,3 +26,17 @@ export const fetchTodoSuccess = (todo) =>
 
 export const fetchTodoFailed = (error) =>
   createAction(TODOS_ACTION_TYPES.FETCH_TODO_FAILED, error);
+
+  export const editTodoStart = (todo, id, accessToken, itemType) =>
+  createAction(TODOS_ACTION_TYPES.EDIT_TODO_START, {
+    todo,
+    id,
+    accessToken,
+    itemType,
+  });
+
+export const editTodoSuccess = (todo) =>
+  createAction(TODOS_ACTION_TYPES.EDIT_TODO_SUCCESS, todo);
+
+export const editTodoFailed = (error) =>
+  createAction(TODOS_ACTION_TYPES.EDIT_TODO_FAILED, error);

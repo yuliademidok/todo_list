@@ -15,6 +15,7 @@ export const todosReducer = (state = TODOS_INITIAL_STATE, action = {}) => {
   switch (type) {
     case TODOS_ACTION_TYPES.FETCH_TODOS_START:
     case TODOS_ACTION_TYPES.FETCH_TODO_START:
+    case TODOS_ACTION_TYPES.EDIT_TODO_START:
       return { ...state, isLoading: true };
     case TODOS_ACTION_TYPES.FETCH_TODOS_SUCCESS:
       return {
@@ -25,6 +26,7 @@ export const todosReducer = (state = TODOS_INITIAL_STATE, action = {}) => {
         isLoading: false,
       };
     case TODOS_ACTION_TYPES.FETCH_TODO_SUCCESS:
+    case TODOS_ACTION_TYPES.EDIT_TODO_SUCCESS:
       return {
         ...state,
         todo: payload,
@@ -32,6 +34,7 @@ export const todosReducer = (state = TODOS_INITIAL_STATE, action = {}) => {
       };
     case TODOS_ACTION_TYPES.FETCH_TODOS_FAILED:
     case TODOS_ACTION_TYPES.FETCH_TODO_FAILED:
+    case TODOS_ACTION_TYPES.EDIT_TODO_FAILED:
       return { ...state, error: payload, isLoading: false };
     default:
       return state;

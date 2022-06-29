@@ -3,11 +3,8 @@ import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { toast } from "react-toastify";
-
-import { fetchTodoStart } from "../store/todos/todos.action";
+import { fetchTodoStart, editTodoStart } from "../store/todos/todos.action";
 import { selectTodo, selectTodoIsLoading } from "../store/todos/todos.selector";
-import { editTodo, editSubtask } from "../utils/todos.utils";
 import DeleteTodoItem from "./delete-todo-item.component";
 import CompleteTodo from "./complete-todo.component";
 import Option from "./option-drop-down.component";
@@ -76,17 +73,9 @@ const TodoForm = ({ isSubtask }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    try {
-      if (isSubtask) {
-        await editSubtask(formFields, todoId, accessToken);
-      } else await editTodo(formFields, todoId, accessToken);
-      resetFormFields();
-      toast.success(`${itemType} is updated`);
-      navigate("/current-todos");
-    } catch (error) {
-      toast.error(`Error occured when updating ${itemType}`);
-    }
+    dispatch(editTodoStart(formFields, todoId, accessToken, itemType));
+    resetFormFields();
+    navigate("/current-todos");
   };
 
   const date = new Date(formFields?.completed_at);

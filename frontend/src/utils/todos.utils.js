@@ -118,7 +118,7 @@ export const editSubtask = async (subtask, subtaskId, accessToken) => {
     });
 };
 
-export const addSubtask = async (subtask, parent_id, accessToken) => {
+export const addSubtask = async (subtask, accessToken, parent_id) => {
   const { title, description, priority } = subtask;
   return axios
     .post(

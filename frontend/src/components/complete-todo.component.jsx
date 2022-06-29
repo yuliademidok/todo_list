@@ -1,24 +1,20 @@
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
 
-import { toast } from "react-toastify";
-
-import { completeTodo } from "../utils/todos.utils";
+import { completeTodoStart } from "../store/todos/todos.action";
 import Button from "./button.component";
 
 const CompleteTodo = ({ todoId, accessToken, isSubtask }) => {
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
   let itemType = isSubtask ? "subtask" : "todo";
 
   const handleComplete = async (event) => {
     event.preventDefault();
-    try {
-      await completeTodo(todoId, accessToken);
-      toast.success(`${itemType} is completed`);
-      navigate("/current-todos");
-    } catch (error) {
-      toast.error(`Error occured when completing ${itemType}`);
-    }
+    dispatch(completeTodoStart(todoId, accessToken, itemType));
+    navigate("/current-todos");
   };
 
   return (

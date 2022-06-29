@@ -1,28 +1,20 @@
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
-import { toast } from "react-toastify";
-
-import { deleteTodo, deleteSubtask } from "../utils/todos.utils";
+import { deleteTodoStart } from "../store/todos/todos.action";
 import Button from "./button.component";
 
 const DeleteTodoItem = ({ todoId, accessToken, isSubtask }) => {
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
   let itemType = isSubtask ? "subtask" : "todo";
 
   const handleDelete = async (event) => {
     event.preventDefault();
-    try {
-      if (isSubtask) {
-        await deleteSubtask(todoId, accessToken);
-      } else {
-        await deleteTodo(todoId, accessToken);
-      }
-      toast.success(`${itemType} is deleted`);
-      navigate("/current-todos");
-    } catch (error) {
-      toast.error(`Error occured when deleting ${itemType}`);
-    }
+    dispatch(deleteTodoStart(todoId, accessToken, itemType));
+    navigate("/current-todos");
   };
 
   return (

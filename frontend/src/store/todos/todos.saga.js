@@ -10,6 +10,10 @@ import {
   fetchTodoFailed,
   editTodoSuccess,
   editTodoFailed,
+  addTodoSuccess,
+  addTodoFailed,
+  completeTodoSuccess,
+  completeTodoFailed,
 } from "./todos.action";
 import {
   getTodos,
@@ -17,6 +21,11 @@ import {
   getSubtask,
   editTodo,
   editSubtask,
+  addTodo,
+  addSubtask,
+  deleteTodo,
+  deleteSubtask,
+  completeTodo,
 } from "../../utils/todos.utils";
 
 export function* getTodosSaga({ payload }) {
@@ -61,6 +70,45 @@ function* editTodoSaga({ payload }) {
   }
 }
 
+function* addTodoSaga({ payload }) {
+  const { todo, accessToken, itemType, parent_id } = payload;
+  try {
+    let response = null;
+    if (itemType === "todo") {
+      response = yield call(addTodo, todo, accessToken);
+    } else if (itemType === "subtask") {
+      response = yield call(addSubtask, todo, accessToken, parent_id);
+    }
+    toast.success(`${itemType} is added successfully`);
+    yield put(addTodoSuccess({ ...response }));
+  } catch (error) {
+    toast.error(`Error occured when adding ${itemType}`);
+    yield put(addTodoFailed(error));
+  }
+}
+
+function* deleteTodoSaga({ payload }) {
+  const { id, accessToken, itemType } = payload;
+  if (itemType === "todo") {
+    yield call(deleteTodo, id, accessToken);
+  } else if (itemType === "subtask") {
+    yield call(deleteSubtask, id, accessToken);
+  }
+  toast.success(`${itemType} is deleted successfully`);
+}
+
+function* completeTodoSaga({ payload }) {
+  const { id, accessToken, itemType } = payload;
+  try {
+    const response = yield call(completeTodo, id, accessToken);
+    toast.success(`${itemType} is completed`);
+    yield put(completeTodoSuccess({ ...response }));
+  } catch (error) {
+    toast.error(`Error occured when completing ${itemType}`);
+    yield put(completeTodoFailed(error));
+  }
+}
+
 export function* onFetchTodos() {
   yield takeLatest(TODOS_ACTION_TYPES.FETCH_TODOS_START, getTodosSaga);
 }
@@ -73,6 +121,25 @@ export function* onEditTodo() {
   yield takeLatest(TODOS_ACTION_TYPES.EDIT_TODO_START, editTodoSaga);
 }
 
+export function* onAddTodo() {
+  yield takeLatest(TODOS_ACTION_TYPES.ADD_TODO_START, addTodoSaga);
+}
+
+export function* onDeleteTodo() {
+  yield takeLatest(TODOS_ACTION_TYPES.DELETE_TODO, deleteTodoSaga);
+}
+
+export function* onCompleteTodo() {
+  yield takeLatest(TODOS_ACTION_TYPES.COMPLETE_TODO_START, completeTodoSaga);
+}
+
 export function* todosSagas() {
-  yield all([call(onFetchTodos), call(onFetchTodo), call(onEditTodo)]);
+  yield all([
+    call(onFetchTodos),
+    call(onFetchTodo),
+    call(onEditTodo),
+    call(onAddTodo),
+    call(onDeleteTodo),
+    call(onCompleteTodo),
+  ]);
 }

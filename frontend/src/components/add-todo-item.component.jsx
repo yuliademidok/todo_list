@@ -1,10 +1,9 @@
 import { useState, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router";
+import { useDispatch } from "react-redux";
 
-import { toast } from "react-toastify";
-
-import { addTodo, addSubtask } from "../utils/todos.utils";
+import { addTodoStart } from "../store/todos/todos.action";
 import Option from "./option-drop-down.component";
 import SelectBox from "./select-box.component";
 import Button from "./button.component";
@@ -27,6 +26,8 @@ const AddTodoItem = ({ isSubtask }) => {
   const { title, description, priority } = formFields;
 
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const accessToken = localStorage.getItem("accessToken");
 
@@ -54,19 +55,9 @@ const AddTodoItem = ({ isSubtask }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    try {
-      if (isSubtask) {
-        await addSubtask(formFields, parent_id, accessToken);
-      } else {
-        await addTodo(formFields, accessToken);
-      }
-      resetFormFields();
-      toast.success(`${itemType} is added`);
-      navigate("/current-todos");
-    } catch (error) {
-      toast.error(`Error occured when adding ${itemType}`);
-    }
+    dispatch(addTodoStart(formFields, accessToken, itemType, parent_id));
+    resetFormFields();
+    navigate("/current-todos");
   };
 
   return (

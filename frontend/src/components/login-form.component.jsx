@@ -10,6 +10,7 @@ const LoginForm = () => {
     username: "",
     password: "",
   });
+
   const { username, password } = formFields;
 
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const LoginForm = () => {
     });
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(signInStart(username, password));
   };

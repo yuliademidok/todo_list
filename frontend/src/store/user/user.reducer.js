@@ -1,7 +1,7 @@
 import { USER_ACTION_TYPES } from "./user.types";
 
 const INITIAL_STATE = {
-  currentUser: null,
+  currentUser: localStorage.getItem("userId"),
   isLoading: false,
   error: null,
 };
@@ -10,10 +10,18 @@ export const userReducer = (state = INITIAL_STATE, action) => {
   const { type, payload } = action;
 
   switch (type) {
+    case USER_ACTION_TYPES.SIGN_IN_START:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case USER_ACTION_TYPES.SET_CURRENT_USER:
+    case USER_ACTION_TYPES.CHECK_USER_SESSION:
     case USER_ACTION_TYPES.SIGN_IN_SUCCESS:
       return {
         ...state,
-        currentUser: payload,
+        currentUser: localStorage.getItem("userId"),
+        isLoading: false,
       };
     case USER_ACTION_TYPES.SIGN_OUT_SUCCESS:
       return { ...state, currentUser: null };
@@ -22,6 +30,7 @@ export const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         error: payload,
+        isLoading: false,
       };
     default:
       return state;

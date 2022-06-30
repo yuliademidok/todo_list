@@ -6,14 +6,14 @@ import { Subtitle, AuthenticationForm } from "../app.styles";
 const SignUpBlock = () => {
   const navigate = useNavigate();
 
-  const addSubtaskHandler = () => {
-    navigate("sign-up");
+  const onClickHandler = () => {
+    navigate("/sign-up");
   };
 
   return (
     <AuthenticationForm>
       <Subtitle>Don't have an account?</Subtitle>
-      <Button buttonType="delete" onClick={addSubtaskHandler}>Register</Button>
+      <Button buttonType="delete" onClick={onClickHandler}>Register</Button>
     </AuthenticationForm>
   );
 };

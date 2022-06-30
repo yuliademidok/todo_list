@@ -2,12 +2,15 @@ import { takeLatest, put, all, call } from "redux-saga/effects";
 
 import { toast } from "react-toastify";
 
+import history from "../../history";
+
 import { USER_ACTION_TYPES } from "./user.types";
 import {
   signInSuccess,
   signInFailed,
   signOutSuccess,
   signOutFailed,
+  setCurrentUser
 } from "./user.action";
 import {
   getStorageAccessToken,
@@ -19,8 +22,7 @@ import {
 
 export function* getUserData(userId) {
   try {
-    const userData = yield call(getUser, userId);
-    yield put(signInSuccess({ ...userData }));
+    yield call(getUser, userId);
   } catch (error) {
     yield put(signInFailed(error));
   }
@@ -33,6 +35,7 @@ export function* isUserAuthenticated() {
     const user = yield call(getStorageUserId);
     if (!user) return;
     yield call(getUserData, user);
+    yield put(setCurrentUser());
   } catch (error) {
     yield put(signInFailed(error));
   }
@@ -40,8 +43,11 @@ export function* isUserAuthenticated() {
 
 export function* signImWithUsername({ payload: { username, password } }) {
   try {
-    const user = yield call(login, username, password);
-    yield put(signInSuccess({ id: user.id }));
+    yield call(login, username, password);
+    yield put(signInSuccess());
+
+    yield call(history.push, { pathname: "current-todos" });
+    document.location.reload()
   } catch (error) {
     toast.error("Incorrect username or password");
     yield put(signInFailed(error));

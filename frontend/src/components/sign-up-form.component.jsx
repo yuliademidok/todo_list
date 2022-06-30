@@ -38,7 +38,7 @@ const SignUpForm = () => {
       await createUser(formFields);
       resetFormFields();
       toast.success("A user is successfully created");
-      navigate("/");
+      navigate("login");
     } catch (error) {
       console.log("Error occure when sign up:", error);
       if (error.response.data.username) {

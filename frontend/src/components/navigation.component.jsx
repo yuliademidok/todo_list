@@ -21,17 +21,18 @@ const Navigation = () => {
     <Fragment>
       <NavBar>
         <NavBarItems>
-          <Link to="/current-todos">Current Todos</Link>
-          <Link to="/completed-todos">Completed Todos</Link>
-          <Link to="/all-todos">All Todos</Link>
-          <AddTodoButton />
-
           {currentUser ? (
-            <Link onClick={signOutHandler} to="/">
-              Logout
-            </Link>
+            <Fragment>
+              <Link to="/current-todos">Current Todos</Link>
+              <Link to="/completed-todos">Completed Todos</Link>
+              <Link to="/all-todos">All Todos</Link>
+              <AddTodoButton />
+              <Link onClick={signOutHandler} to="/login">
+                Logout
+              </Link>
+            </Fragment>
           ) : (
-            <Link to="/">Login</Link>
+            <Link to="login">Login</Link>
           )}
         </NavBarItems>
       </NavBar>

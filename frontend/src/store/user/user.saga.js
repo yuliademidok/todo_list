@@ -47,7 +47,7 @@ export function* signImWithUsername({ payload: { username, password } }) {
     yield put(signInSuccess());
 
     yield call(history.push, { pathname: "current-todos" });
-    document.location.reload()
+    // document.location.reload()
   } catch (error) {
     toast.error("Incorrect username or password");
     yield put(signInFailed(error));

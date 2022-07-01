@@ -1,4 +1,4 @@
-import { useEffect, Fragment } from "react";
+import { useEffect, Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -21,6 +21,8 @@ const Todos = ({ status }) => {
   const isLoading = useSelector(selectTodosIsLoading);
 
   const itemLimit = 10;
+  const [selected, setSelected] = useState(0);
+
   const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
@@ -30,6 +32,7 @@ const Todos = ({ status }) => {
   const handlePagination = async (value) => {
     const offset = value.selected * itemLimit;
     dispatch(fetchTodosStart(accessToken, status, offset));
+    setSelected(value.selected);
   };
 
   return (
@@ -54,6 +57,7 @@ const Todos = ({ status }) => {
                 todosCount={todosCount}
                 handlePagination={handlePagination}
                 itemLimit={itemLimit}
+                selected={selected}
               />
             </Fragment>
           ) : (

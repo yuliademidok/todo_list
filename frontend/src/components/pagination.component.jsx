@@ -2,12 +2,13 @@ import ReactPaginate from "react-paginate";
 
 import { PaginationBlock } from "../app.styles";
 
-const Pagination = ({ todosCount, handlePagination, itemLimit }) => {
+const Pagination = ({ todosCount, handlePagination, itemLimit, selected }) => {
   const pageCount = Math.ceil(todosCount / itemLimit);
 
   return (
     <PaginationBlock>
       <ReactPaginate
+        forcePage={selected}
         nextLabel=">>"
         previousLabel="<<"
         breakLabel="..."

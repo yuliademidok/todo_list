@@ -5,7 +5,7 @@ export const setCurrentUser = (user) =>
   createAction(USER_ACTION_TYPES.SET_CURRENT_USER, user);
 
 export const checkUserSession = () =>
-  createAction(USER_ACTION_TYPES.CHECK_USER_SESSION);
+  createAction(USER_ACTION_TYPES.CHECK_USER_SESSION_START);
 
 export const signInStart = (username, password) =>
   createAction(USER_ACTION_TYPES.SIGN_IN_START, { username, password });
@@ -24,3 +24,12 @@ export const signOutSuccess = () =>
 
 export const signOutFailed = (error) =>
   createAction(USER_ACTION_TYPES.SIGN_OUT_FAILED, error);
+
+export const refreshTokenStart = (refreshToken) =>
+  createAction(USER_ACTION_TYPES.REFRESH_TOKEN_INIT, { refreshToken });
+
+export const refreshTokenSuccess = () =>
+  createAction(USER_ACTION_TYPES.REFRESH_TOKEN_SUCCESS);
+
+export const refreshTokenFailed = (error) =>
+  createAction(USER_ACTION_TYPES.REFRESH_TOKEN_FAILED, error);

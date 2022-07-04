@@ -16,7 +16,7 @@ export const userReducer = (state = INITIAL_STATE, action) => {
         isLoading: true,
       };
     case USER_ACTION_TYPES.SET_CURRENT_USER:
-    case USER_ACTION_TYPES.CHECK_USER_SESSION:
+    case USER_ACTION_TYPES.CHECK_USER_SESSION_START:
     case USER_ACTION_TYPES.SIGN_IN_SUCCESS:
       return {
         ...state,
@@ -27,6 +27,7 @@ export const userReducer = (state = INITIAL_STATE, action) => {
       return { ...state, currentUser: null };
     case USER_ACTION_TYPES.SIGN_OUT_FAILED:
     case USER_ACTION_TYPES.SIGN_IN_FAILED:
+    case USER_ACTION_TYPES.REFRESH_TOKEN_FAILED:
       return {
         ...state,
         error: payload,

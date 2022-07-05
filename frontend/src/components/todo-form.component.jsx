@@ -35,7 +35,6 @@ const TodoForm = ({ isSubtask }) => {
   const navigate = useNavigate();
 
   const todoId = params.id;
-  const accessToken = localStorage.getItem("accessToken");
 
   const dispatch = useDispatch();
 
@@ -47,8 +46,8 @@ const TodoForm = ({ isSubtask }) => {
   const isLoading = useSelector(selectTodoIsLoading);
 
   useEffect(() => {
-    dispatch(fetchTodoStart(todoId, accessToken, itemType));
-  }, [accessToken, dispatch, todoId, itemType]);
+    dispatch(fetchTodoStart(todoId, itemType));
+  }, [dispatch, todoId, itemType]);
 
   useEffect(() => {
     setFormFields(todo);
@@ -73,7 +72,7 @@ const TodoForm = ({ isSubtask }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    dispatch(editTodoStart(formFields, todoId, accessToken, itemType));
+    dispatch(editTodoStart(formFields, todoId, itemType));
     resetFormFields();
     navigate("/current-todos");
   };
@@ -143,13 +142,11 @@ const TodoForm = ({ isSubtask }) => {
               {!formFields?.completed_at && (
                 <CompleteTodo
                   todoId={todoId}
-                  accessToken={accessToken}
                   isSubtask={isSubtask}
                 />
               )}
               <DeleteTodoItem
                 todoId={todoId}
-                accessToken={accessToken}
                 isSubtask={isSubtask}
               />
 

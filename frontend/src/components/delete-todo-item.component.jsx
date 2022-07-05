@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { deleteTodoStart } from "../store/todos/todos.action";
 import Button from "./button.component";
 
-const DeleteTodoItem = ({ todoId, accessToken, isSubtask }) => {
+const DeleteTodoItem = ({ todoId, isSubtask }) => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const DeleteTodoItem = ({ todoId, accessToken, isSubtask }) => {
 
   const handleDelete = async (event) => {
     event.preventDefault();
-    dispatch(deleteTodoStart(todoId, accessToken, itemType));
+    dispatch(deleteTodoStart(todoId, itemType));
     navigate("/current-todos");
   };
 

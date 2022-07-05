@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { completeTodoStart } from "../store/todos/todos.action";
 import Button from "./button.component";
 
-const CompleteTodo = ({ todoId, accessToken, isSubtask }) => {
+const CompleteTodo = ({ todoId, isSubtask }) => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const CompleteTodo = ({ todoId, accessToken, isSubtask }) => {
 
   const handleComplete = async (event) => {
     event.preventDefault();
-    dispatch(completeTodoStart(todoId, accessToken, itemType));
+    dispatch(completeTodoStart(todoId, itemType));
     navigate("/current-todos");
   };
 

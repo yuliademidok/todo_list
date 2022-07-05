@@ -29,8 +29,6 @@ const AddTodoItem = ({ isSubtask }) => {
 
   const dispatch = useDispatch();
 
-  const accessToken = localStorage.getItem("accessToken");
-
   const params = useParams();
   let parent_id = params.parent_id;
 
@@ -55,7 +53,7 @@ const AddTodoItem = ({ isSubtask }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    dispatch(addTodoStart(formFields, accessToken, itemType, parent_id));
+    dispatch(addTodoStart(formFields, itemType, parent_id));
     resetFormFields();
     navigate("/current-todos");
   };

@@ -1,24 +1,17 @@
-import axios from "axios";
+import axiosConfig from "./axiosConfig"
 
 const API_URL = "/api/todos/";
 const API_COMPLETE_URL = "/api/todos/complete/";
 const API_SUBTASKS_URL = "/api/todos/subtasks/";
 
-const headers = (accessToken) => ({
-  headers: {
-    Authorization: `Bearer ${accessToken}`,
-  },
-});
-
-export const getTodos = (accessToken, status = "", offset = 0) => {
+export const getTodos = (status = "", offset = 0) => {
   if (status) {
     status = `&status=${status}`;
   }
   return (
-    axios
+    axiosConfig
       .get(
-        API_URL + `?limit=10&offset=${offset}` + status,
-        headers(accessToken)
+        API_URL + `?limit=10&offset=${offset}` + status
       )
       .then((response) => {
         return response.data;
@@ -26,83 +19,81 @@ export const getTodos = (accessToken, status = "", offset = 0) => {
   );
 };
 
-export const getTodo = async (todoId, accessToken) => {
-  return axios
-    .get(API_URL + todoId + "/", headers(accessToken))
+export const getTodo = async (todoId) => {
+  return axiosConfig
+    .get(API_URL + todoId + "/")
     .then((response) => {
       return response.data;
     })
 };
 
-export const addTodo = async (todo, accessToken) => {
+export const addTodo = async (todo) => {
   const { title, description, priority } = todo;
-  return axios
+  return axiosConfig
     .post(
       API_URL,
       {
         title,
         description,
         priority,
-      },
-      headers(accessToken)
+      }
     )
     .then((response) => {
       return response.data;
     });
 };
 
-export const editTodo = async (todo, todoId, accessToken) => {
+export const editTodo = async (todo, todoId) => {
   const { title, description, priority } = todo;
-  return axios
+  return axiosConfig
     .put(
       API_URL + todoId + "/",
       {
         title,
         description,
         priority,
-      },
-      headers(accessToken)
+      }
     )
     .then((response) => {
       return response.data;
     });
 };
 
-export const deleteTodo = async (todoId, accessToken) => {
-  return axios
-    .delete(API_URL + todoId + "/", headers(accessToken))
+export const deleteTodo = async (todoId) => {
+  return axiosConfig
+    .delete(API_URL + todoId + "/")
     .then((response) => {
       return response.data;
     });
 };
 
-export const completeTodo = async (todoId, accessToken) => {
-  return axios
-    .patch(API_COMPLETE_URL + todoId + "/", {}, headers(accessToken))
+export const completeTodo = async (todoId) => {
+  return axiosConfig
+    .patch(API_COMPLETE_URL + todoId + "/", {})
     .then((response) => {
       return response.data;
     });
 };
 
-export const getSubtask = async (subtaskId, accessToken) => {
-  return axios
-    .get(API_SUBTASKS_URL + subtaskId + "/", headers(accessToken))
+export const getSubtask = async (subtaskId) => {
+  return axiosConfig
+    .get(API_SUBTASKS_URL + subtaskId + "/")
     .then((response) => {
       return response.data;
     })
 };
 
-export const deleteSubtask = async (subtaskId, accessToken) => {
-  return axios
-    .delete(API_SUBTASKS_URL + subtaskId + "/", headers(accessToken))
+export const deleteSubtask = async (subtaskId) => {
+  return axiosConfig
+    .delete(API_SUBTASKS_URL + subtaskId + "/")
     .then((response) => {
       return response.data;
     });
 };
 
-export const editSubtask = async (subtask, subtaskId, accessToken) => {
+export const editSubtask = async (subtask, subtaskId) => {
   const { title, description, priority, parent_id } = subtask;
-  return axios
+  return axiosConfig
     .patch(
       API_SUBTASKS_URL + subtaskId + "/",
       {
@@ -110,25 +101,23 @@ export const editSubtask = async (subtask, subtaskId, accessToken) => {
         description,
         priority,
         parent_id,
-      },
-      headers(accessToken)
+      }
     )
     .then((response) => {
       return response.data;
     });
 };
 
-export const addSubtask = async (subtask, accessToken, parent_id) => {
+export const addSubtask = async (subtask, parent_id) => {
   const { title, description, priority } = subtask;
-  return axios
+  return axiosConfig
     .post(
       API_URL + parent_id + "/subtasks",
       {
         title,
         description,
         priority,
-      },
-      headers(accessToken)
+      }
     )
     .then((response) => {
       return response.data;

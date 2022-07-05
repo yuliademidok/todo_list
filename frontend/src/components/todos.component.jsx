@@ -23,15 +23,13 @@ const Todos = ({ status }) => {
   const itemLimit = 10;
   const [selected, setSelected] = useState(0);
 
-  const accessToken = localStorage.getItem("accessToken");
-
   useEffect(() => {
-    dispatch(fetchTodosStart(accessToken, status));
-  }, [accessToken, dispatch, status]);
+    dispatch(fetchTodosStart(status));
+  }, [dispatch, status]);
 
   const handlePagination = async (value) => {
     const offset = value.selected * itemLimit;
-    dispatch(fetchTodosStart(accessToken, status, offset));
+    dispatch(fetchTodosStart(status, offset));
     setSelected(value.selected);
   };
 

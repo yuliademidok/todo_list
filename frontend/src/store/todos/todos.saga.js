@@ -30,8 +30,8 @@ import {
 
 export function* getTodosSaga({ payload }) {
   try {
-    const { accessToken, status, offset } = payload;
-    const todos = yield call(getTodos, accessToken, status, offset);
+    const { status, offset } = payload;
+    const todos = yield call(getTodos, status, offset);
     yield put(fetchTodosSuccess({ ...todos }));
   } catch (error) {
     yield put(fetchTodosFailed(error));
@@ -40,12 +40,12 @@ export function* getTodosSaga({ payload }) {
 
 function* getTodoSaga({ payload }) {
   try {
-    const { accessToken, id, itemType } = payload;
+    const { id, itemType } = payload;
     let response = null;
     if (itemType === "todo") {
-      response = yield call(getTodo, id, accessToken);
+      response = yield call(getTodo, id);
     } else if (itemType === "subtask") {
-      response = yield call(getSubtask, id, accessToken);
+      response = yield call(getSubtask, id);
     }
     yield put(fetchTodoSuccess({ ...response }));
   } catch (error) {
@@ -54,13 +54,13 @@ function* getTodoSaga({ payload }) {
 }
 
 function* editTodoSaga({ payload }) {
-  const { todo, id, accessToken, itemType } = payload;
+  const { todo, id, itemType } = payload;
   try {
     let response = null;
     if (itemType === "todo") {
-      response = yield call(editTodo, todo, id, accessToken);
+      response = yield call(editTodo, todo, id);
     } else if (itemType === "subtask") {
-      response = yield call(editSubtask, todo, id, accessToken);
+      response = yield call(editSubtask, todo, id);
     }
     toast.success(`${itemType} is updated`);
     yield put(editTodoSuccess({ ...response }));
@@ -71,13 +71,13 @@ function* editTodoSaga({ payload }) {
 }
 
 function* addTodoSaga({ payload }) {
-  const { todo, accessToken, itemType, parent_id } = payload;
+  const { todo, itemType, parent_id } = payload;
   try {
     let response = null;
     if (itemType === "todo") {
-      response = yield call(addTodo, todo, accessToken);
+      response = yield call(addTodo, todo);
     } else if (itemType === "subtask") {
-      response = yield call(addSubtask, todo, accessToken, parent_id);
+      response = yield call(addSubtask, todo, parent_id);
     }
     toast.success(`${itemType} is added successfully`);
     yield put(addTodoSuccess({ ...response }));
@@ -88,19 +88,19 @@ function* addTodoSaga({ payload }) {
 }
 
 function* deleteTodoSaga({ payload }) {
-  const { id, accessToken, itemType } = payload;
+  const { id, itemType } = payload;
   if (itemType === "todo") {
-    yield call(deleteTodo, id, accessToken);
+    yield call(deleteTodo, id);
   } else if (itemType === "subtask") {
-    yield call(deleteSubtask, id, accessToken);
+    yield call(deleteSubtask, id);
   }
   toast.success(`${itemType} is deleted successfully`);
 }
 
 function* completeTodoSaga({ payload }) {
-  const { id, accessToken, itemType } = payload;
+  const { id, itemType } = payload;
   try {
-    const response = yield call(completeTodo, id, accessToken);
+    const response = yield call(completeTodo, id);
     toast.success(`${itemType} is completed`);
     yield put(completeTodoSuccess({ ...response }));
   } catch (error) {

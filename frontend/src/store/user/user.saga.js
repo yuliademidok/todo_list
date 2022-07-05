@@ -16,6 +16,7 @@ import { USER_ACTION_TYPES } from "./user.types";
 import {
   signInSuccess,
   signInFailed,
+  signOutStart,
   signOutSuccess,
   signOutFailed,
   setCurrentUser,
@@ -91,37 +92,31 @@ function getFailType(action) {
 }
 
 function* refreshTokenMonitor(monitoredAction) {
-  console.log("started monitoring", monitoredAction.type);
+  // console.log("started monitoring", monitoredAction.type);
   const { fail } = yield race({
     success: take(getSuccessType(monitoredAction)),
     fail: take(getFailType(monitoredAction)),
   });
 
   if (fail && fail.payload && fail.payload.response.status === 401) {
-    console.log("detected 401, refreshing token");
+    // console.log("detected 401, refreshing token");
     const refreshToken = getStorageRefreshToken();
-
-    const response = yield call(refreshTokenAPI, refreshToken);
-    yield put(refreshTokenStart());
-
-    // const { success } = yield race({
-    //   success: take(refreshTokenSuccess().type),
-    //   fail: take(refreshTokenFailed().type),
-    // });
-
-    if (response?.access) {
-      console.log("token refreshed, retrying", monitoredAction.type);
+    
+    try {
+      const response = yield call(refreshTokenAPI, refreshToken);
+      yield put(refreshTokenStart());
+      // console.log("token refreshed, retrying", monitoredAction.type);
       yield call(refreshAccessToken, response.access)
       yield put(refreshTokenSuccess(response));
       yield put(monitoredAction);
-    } else {
+    }
+    catch (error) {
       console.log("token refresh failed, logging out user");
-      yield put(logout());
-      yield put(refreshTokenFailed({ ...response }));
+      yield put(signOutStart());
+      yield put(refreshTokenFailed(error));
     }
   }
-
-  console.log("monitoring", monitoredAction.type, "finished");
+  // console.log("monitoring", monitoredAction.type, "finished");
 }
 
 export function* onSignInStart() {

@@ -20,19 +20,15 @@ from django.conf import settings
 from django.conf.urls.static import static
 from drf_spectacular.views import SpectacularSwaggerView, SpectacularRedocView, SpectacularAPIView
 
-from accounts_app.api.router import api_router as accounts_router
-from todos_app.api.router import api_router as todos_router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     # Accounts
     path('api/accounts/', include('accounts_app.urls')),
-    path('api/accounts/', include(accounts_router.urls)),
 
     # Todos
     path('api/todos/', include('todos_app.urls')),
-    path('api/todos/', include(todos_router.urls)),
 
     # API Spectacular
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
